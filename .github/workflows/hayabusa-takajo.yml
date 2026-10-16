@@ -1,0 +1,45 @@
+name: Hayabusa Takajo server integration
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - artifacts/definitions/Exchange/Windows/EventLogs/Hayabusa/Takajo.yaml
+      - scripts/testing/hayabusa_takajo/**
+      - .github/workflows/hayabusa-takajo.yml
+  push:
+    paths:
+      - artifacts/definitions/Exchange/Windows/EventLogs/Hayabusa/Takajo.yaml
+      - scripts/testing/hayabusa_takajo/**
+      - .github/workflows/hayabusa-takajo.yml
+
+permissions:
+  contents: read
+
+jobs:
+  integration:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Check out source
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          persist-credentials: false
+
+      - name: Run real server collections
+        shell: bash
+        run: |
+          python3 scripts/testing/hayabusa_takajo/test.py \
+            --workdir "$RUNNER_TEMP/hayabusa-takajo" \
+            2>&1 | tee "$RUNNER_TEMP/hayabusa-takajo.log"
+
+      - name: Save test report and console log
+        if: always()
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1
+        with:
+          name: hayabusa-takajo-results
+          path: |
+            ${{ runner.temp }}/hayabusa-takajo/report.json
+            ${{ runner.temp }}/hayabusa-takajo.log
+          retention-days: 7
+          if-no-files-found: warn

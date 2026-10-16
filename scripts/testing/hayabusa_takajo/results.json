@@ -1,0 +1,62 @@
+{
+  "success": {
+    "flow_id": "F.DAU21C7ODF6TE",
+    "timeline_rows": 285,
+    "uploads": 20
+  },
+  "duplicate": {
+    "flow_id": "F.DAU21DUO8VUAO",
+    "timeline_rows": 570,
+    "uploads": 20
+  },
+  "empty_timeline": {
+    "flow_id": "F.DAU21FRTUM5AM",
+    "timeline_rows": 0,
+    "uploads": 2
+  },
+  "missing_file": {
+    "flow_id": "F.DAU21HGVI3INE",
+    "uploads": 0
+  },
+  "missing_collection": {
+    "flow_id": "F.DAU21HILFL332",
+    "uploads": 0
+  },
+  "missing_parameters": {
+    "flow_id": "F.DAU21HP1TASDS",
+    "uploads": 0
+  },
+  "hayabusa_failure": {
+    "flow_id": "F.DAU21HO2U3RS6",
+    "uploads": 1
+  },
+  "takajo_failure": {
+    "flow_id": "F.DAU21IBNPLG9O",
+    "uploads": 2
+  },
+  "nested_output": {
+    "flow_id": "F.DAU21K5AIQ7EM",
+    "uploads": 4
+  },
+  "large_staging": [
+    {
+      "StageStats": [
+        {
+          "Total": 1500,
+          "Successful": 1500
+        }
+      ],
+      "Ready": true,
+      "OldLen": 0
+    },
+    {
+      "FailStats": [
+        {
+          "Total": 1500,
+          "Successful": 1499
+        }
+      ],
+      "Ready": false
+    }
+  ]
+}
