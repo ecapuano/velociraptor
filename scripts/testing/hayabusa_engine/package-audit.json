@@ -1,0 +1,51 @@
+{
+  "converted_rule_files": 4936,
+  "limits": "Static package audit only. Rejection counts are not missed detections. Some rejected rules are deprecated or unsupported. No speed comparison.",
+  "reject_diagnostics": 96,
+  "reject_errors": {
+    "In rule Disabled Users Failing To Authenticate From Source Using Kerberos: Timeframe detections not supported": 1,
+    "In rule Enumeration via the Global Catalog: Timeframe detections not supported": 1,
+    "In rule Failed Mounting of Hidden Share: Timeframe detections not supported": 1,
+    "In rule Failed NTLM Logins with Different Accounts from Single Source System: Timeframe detections not supported": 1,
+    "In rule Invalid Users Failing To Authenticate From Single Source Using NTLM: Timeframe detections not supported": 1,
+    "In rule Invalid Users Failing To Authenticate From Source Using Kerberos: Timeframe detections not supported": 1,
+    "In rule Multiple Users Failing to Authenticate from Single Process: Timeframe detections not supported": 1,
+    "In rule Multiple Users Remotely Failing To Authenticate From Single Source: Timeframe detections not supported": 1,
+    "In rule PW Guessing: Timeframe detections not supported": 1,
+    "In rule PW Spray: Timeframe detections not supported": 1,
+    "In rule Password Spraying via Explicit Credentials: Timeframe detections not supported": 1,
+    "In rule Possible DNS Rebinding: Timeframe detections not supported": 1,
+    "In rule Quick Execution of a Series of Suspicious Commands 2: Timeframe detections not supported": 1,
+    "In rule Quick Execution of a Series of Suspicious Commands: Timeframe detections not supported": 1,
+    "In rule Rare Scheduled Task Creations: Timeframe detections not supported": 1,
+    "In rule Rare Schtasks Creations: Timeframe detections not supported": 1,
+    "In rule Rare Service Installations: Timeframe detections not supported": 1,
+    "In rule Reconnaissance Activity Using BuiltIn Commands 2: Timeframe detections not supported": 1,
+    "In rule Reconnaissance Activity Using BuiltIn Commands: Timeframe detections not supported": 1,
+    "In rule Remote Schtasks Creation: Timeframe detections not supported": 1,
+    "In rule Suspicious Multiple File Rename Or Delete Occurred: Timeframe detections not supported": 1,
+    "In rule User Guessing: Timeframe detections not supported": 1,
+    "In rule Valid Users Failing to Authenticate From Single Source Using Kerberos: Timeframe detections not supported": 1,
+    "In rule Valid Users Failing to Authenticate from Single Source Using NTLM: Timeframe detections not supported": 1,
+    "Invalid modifier expand": 38,
+    "Invalid modifier fieldref": 14,
+    "Invalid modifier i": 6,
+    "Missing Source: '*/windows/*'": 13,
+    "Missing Source: '*/windows/ntfs'": 1
+  },
+  "rejected_unique_paths": 67,
+  "sha256": "a9c2909cf701b64545fbead387faf7af55860b42d0ae1512f707fda81be79814",
+  "source": "https://sigma.velocidex.com/artifacts/Velociraptor-Hayabusa-Rules.zip",
+  "token_impersonation_present_in_converted_rules": false,
+  "token_impersonation_rejections": [
+    {
+      "Error": "Invalid modifier fieldref",
+      "Path": "hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Med_Logon-Type9-NewInteractive_PossibleTokenImpersonation.yml"
+    },
+    {
+      "Error": "Invalid modifier fieldref",
+      "Path": "hayabusa/hayabusa/builtin/Security/LogonLogoff/Logon/Sec_4624_Med_Logon-Type9-NewInteractive_PossibleTokenImpersonation.yml"
+    }
+  ],
+  "token_impersonation_rule_id": "46614e82-7926-41f9-85aa-006b98c5c2a3"
+}

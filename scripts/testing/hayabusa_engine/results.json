@@ -1,0 +1,89 @@
+{
+  "artifact_sha256": "77ba32e0beb76b6b8a80ab78c359bcdf0bd9e8a3e91c5b9f24743478b4775fbe",
+  "velociraptor_version": "name: velociraptor\nversion: 0.77.2\ncommit: c0c9dd609\nbuild_time: \"2026-08-10T00:58:52Z\"\ncompiler: go1.25.3\nsystem: linux\narchitecture: amd64",
+  "success": {
+    "flow_id": "F.DBFRMIM6UTIJQ",
+    "timeline_rows": 287,
+    "detection_rows": 287,
+    "uploads": 2
+  },
+  "duplicate": {
+    "flow_id": "F.DBFRMJG57J7C8",
+    "timeline_rows": 574,
+    "detection_rows": 574,
+    "uploads": 2
+  },
+  "empty_timeline": {
+    "flow_id": "F.DBFRMKVANE0S4",
+    "timeline_rows": 0,
+    "detection_rows": 0,
+    "uploads": 2
+  },
+  "default_medium": {
+    "flow_id": "F.DBFRMLUTS6PRG",
+    "timeline_rows": 5,
+    "detection_rows": 5,
+    "uploads": 2
+  },
+  "renamed": {
+    "flow_id": "F.DBFRMMT8VMUCC",
+    "timeline_rows": 287,
+    "detection_rows": 287,
+    "uploads": 2
+  },
+  "missing_file": {
+    "flow_id": "F.DBFRMNO8M120E",
+    "uploads": 0
+  },
+  "missing_collection": {
+    "flow_id": "F.DBFRMO4FVCGVM",
+    "uploads": 0
+  },
+  "missing_parameters": {
+    "flow_id": "F.DBFRMOBRDQ4N6",
+    "uploads": 0
+  },
+  "invalid_threads": {
+    "flow_id": "F.DBFRMOCHD1886",
+    "uploads": 0
+  },
+  "invalid_level": {
+    "flow_id": "F.DBFRMOGT6BO0I",
+    "uploads": 0
+  },
+  "hayabusa_failure": {
+    "flow_id": "F.DBFRMOPBUPRM8",
+    "uploads": 1
+  },
+  "monitor_sha256": "c6d8260a9d773a2b352b597dc1f10035a84889ce3b53f4589fa9ccfcb4598167",
+  "monitor": {
+    "analysis_flows": [
+      "F.DBFRMQ29T3ONM",
+      "F.DBFRMR192BTG4"
+    ],
+    "detection_rows": 10,
+    "serialized": true,
+    "ignored_nonmatching_and_server_events": true
+  },
+  "large_staging": [
+    {
+      "StageStats": [
+        {
+          "Total": 1500,
+          "Successful": 1500
+        }
+      ],
+      "Ready": true,
+      "OldLen": 0
+    },
+    {
+      "FailStats": [
+        {
+          "Total": 1500,
+          "Successful": 1499
+        }
+      ],
+      "Ready": false
+    }
+  ]
+}

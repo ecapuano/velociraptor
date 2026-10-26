@@ -1,0 +1,7 @@
+LET Staged <= SELECT format(format="%d.evtx",args=[_value]) AS LocalPath FROM range(end=1500)
+LET StageStats <= SELECT count() AS Total, sum(item=if(condition=LocalPath, then=1, else=0)) AS Successful FROM Staged GROUP BY 1
+LET Ready <= StageStats.Total[0] > 0 AND StageStats.Total[0] = StageStats.Successful[0]
+SELECT StageStats, Ready, len(list=Staged) AS OldLen FROM scope()
+LET Failed <= SELECT if(condition=_value != 1200,then="good.evtx") AS LocalPath FROM range(end=1500)
+LET FailStats <= SELECT count() AS Total, sum(item=if(condition=LocalPath,then=1,else=0)) AS Successful FROM Failed GROUP BY 1
+SELECT FailStats, FailStats.Total[0] > 0 AND FailStats.Total[0] = FailStats.Successful[0] AS Ready FROM scope()
