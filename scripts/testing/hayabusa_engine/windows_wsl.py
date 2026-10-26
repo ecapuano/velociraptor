@@ -8,6 +8,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import time
+import traceback
 import urllib.request
 
 import yaml
@@ -44,6 +45,14 @@ def main():
         if result.returncode:
             # Private CLI output can contain configuration. Do not print it.
             (work/'last-command.stderr').write_text(result.stderr)
+            categories = ['ResourceExhausted', 'message larger than max', 'DeadlineExceeded',
+                'deadline exceeded', 'PermissionDenied', 'Unavailable', 'connection refused',
+                'No such file', 'not found', 'undefined', 'Syntax', 'EOF', 'Canceled',
+                'timeout', 'failed to parse', 'invalid character', 'Too many rows']
+            report['failed_cli'] = {'exit_code': result.returncode,
+                'stderr_bytes': len(result.stderr.encode()),
+                'stderr_categories': [word for word in categories if word.lower() in result.stderr.lower()],
+                'was_api_query': 'query' in argv}
             raise RuntimeError('Velociraptor command failed; private diagnostic retained in WSL')
         return result.stdout
 
@@ -231,6 +240,11 @@ SELECT * FROM foreach(row=["System", "Application", "Security"], query={
         report['status'] = 'FAIL'
         report['failed_stage'] = stage
         report['error_type'] = type(error).__name__
+        report['error_source_lines'] = [frame.lineno for frame in traceback.extract_tb(error.__traceback__)
+                                        if Path(frame.filename).name == 'windows_wsl.py']
+        if isinstance(error, AssertionError):
+            # All assertion messages in this harness are controlled, static strings.
+            report['assertion'] = str(error)
         # Avoid serializing exceptions, queries, event contents or generated config.
         raise RuntimeError('Windows integration failed at '+stage) from None
     finally:
