@@ -32,7 +32,9 @@ host, install a persistent service, or require repository secrets.
    Defender; the sanitized report includes a count of related Defender detections
    when available. The existing artifact does not expose the updater exit code;
    this check proves the default update command ran, not that its network update
-   completed successfully.
+   completed successfully. Upstream [4.2.0 updater code](https://github.com/Yamato-Security/hayabusa/blob/v4.2.0/src/main.rs#L1080)
+   detects `encoded_rules.yml` and downloads the encoded rules/config files; it
+   takes the plain-rule git-clone path only when that encoded file is absent.
 4. Install the actual `Server.Monitor.Windows.EventLogs.HayabusaEngine` using
    `add_server_monitoring` before scheduling collections. Do not seed filestore
    rows or inject completion events.

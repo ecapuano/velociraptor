@@ -169,11 +169,15 @@ SELECT * FROM foreach(row=["System", "Application", "Security"], query={
             files = query(f'SELECT * FROM uploads(client_id={json.dumps(client_id)}, flow_id={json.dumps(flow)})')
             files = [r for r in files if r.get('Type') != 'idx']
             assert len(files) == 1 and files[0]['file_size'] > 0, 'Missing endpoint timeline upload'
-            parsed = query(f'SELECT * FROM foreach(row={{ SELECT * FROM uploads(client_id={json.dumps(client_id)}, flow_id={json.dumps(flow)}) WHERE NOT Type = "idx" }}, query={{ SELECT * FROM parse_jsonl(filename=vfs_path, accessor="fs") }})')
-            emitted = query(f'SELECT * FROM source(client_id={json.dumps(client_id)}, flow_id={json.dumps(flow)}, artifact="{ENDPOINT}/Results")')
-            assert len(parsed) == len(emitted), 'Uploaded timeline and endpoint Results differ'
+            # Aggregate on the server: live event rows can exceed gRPC's message limit.
+            # Compare nonempty JSONL line count too, so silently skipped bad JSON fails.
+            parsed = query(f'SELECT count() AS N FROM foreach(row={{ SELECT * FROM uploads(client_id={json.dumps(client_id)}, flow_id={json.dumps(flow)}) WHERE NOT Type = "idx" }}, query={{ SELECT * FROM parse_jsonl(filename=vfs_path, accessor="fs") }}) GROUP BY 1')
+            raw_lines = query(f'SELECT count() AS N FROM foreach(row={{ SELECT * FROM uploads(client_id={json.dumps(client_id)}, flow_id={json.dumps(flow)}) WHERE NOT Type = "idx" }}, query={{ SELECT * FROM parse_lines(filename=vfs_path, accessor="fs") WHERE Line != "" }}) GROUP BY 1')
+            emitted = query(f'SELECT count() AS N FROM source(client_id={json.dumps(client_id)}, flow_id={json.dumps(flow)}, artifact="{ENDPOINT}/Results") GROUP BY 1')
+            parsed_count = parsed[0]['N'] if parsed else 0
+            assert parsed_count == (emitted[0]['N'] if emitted else 0) == (raw_lines[0]['N'] if raw_lines else 0), 'Uploaded timeline and endpoint Results differ or contain invalid JSON'
             if label == 'endpoint_fixture':
-                assert len(parsed) == 5, 'Pinned live-response fixture count changed; investigate rule/package differences'
+                assert parsed_count == 5, 'Pinned live-response fixture count changed; investigate rule/package differences'
             # Verify cleanup on the native Windows client, not by interpreting its paths in WSL.
             import re
             removed = sorted(set(re.findall(r'remov(?:ing|ed) tempdir (\S+)', messages)))
@@ -185,7 +189,7 @@ SELECT * FROM foreach(row=["System", "Application", "Security"], query={
             audit_flow = client_collection(audit_name)
             audited = query(f'SELECT * FROM source(client_id={json.dumps(client_id)}, flow_id={json.dumps(audit_flow)}, artifact="{audit_name}/Uploads")')
             assert len(audited) == len(removed) and all(r['Kind'] == 'Path' and not r.get('Stat') for r in audited), 'Endpoint executable or process survived cleanup'
-            report['checks'][label] = {'uploaded_timelines': len(files), 'timeline_rows': len(parsed),
+            report['checks'][label] = {'uploaded_timelines': len(files), 'timeline_rows': parsed_count,
                 'native_process_execution_logged': True, 'temporary_directories_removed': len(removed),
                 'remaining_hayabusa_processes': 0, 'rule_update_default_exercised': label.endswith('update')}
 
@@ -198,7 +202,7 @@ SELECT * FROM foreach(row=["System", "Application", "Security"], query={
             name = 'Custom.Test.WindowsHayabusa'+suffix
             flow = query(f'SELECT collect_client(client_id={json.dumps(client_id)}, artifacts=["{name}"], timeout=120) AS Flow FROM scope()')[0]['Flow']['flow_id']
             def completed():
-                rows = query(f'SELECT * FROM source(client_id="server", artifact="{MONITOR}/Results") WHERE ClientId={json.dumps(client_id)} AND FlowId={json.dumps(flow)}')
+                rows = query(f'SELECT Kind, Success, AnalysisFlowId, HasDiagnostics FROM source(client_id="server", artifact="{MONITOR}/Results") WHERE ClientId={json.dumps(client_id)} AND FlowId={json.dumps(flow)}')
                 return rows if any(r.get('Kind') == 'Status' for r in rows) else False
             forwarded = poll(completed, 420)
             statuses = [r for r in forwarded if r.get('Kind') == 'Status']
@@ -211,7 +215,7 @@ SELECT * FROM foreach(row=["System", "Application", "Security"], query={
             uploads = query(f'SELECT * FROM uploads(client_id={json.dumps(client_id)}, flow_id={json.dumps(flow)})')
             uploads = [r for r in uploads if r.get('Type') != 'idx']
             assert len(uploads) == expected_count and all(r['file_size'] > 0 for r in uploads)
-            emitted = query(f'SELECT * FROM source(client_id="server", flow_id={json.dumps(analysis)}, artifact="{ANALYZER}/Results")')
+            emitted = query(f'SELECT Kind FROM source(client_id="server", flow_id={json.dumps(analysis)}, artifact="{ANALYZER}/Results")')
             kinds = {r.get('Kind') for r in emitted}
             assert {'Timeline', 'Manifest', 'Status'} <= kinds
             detections = [r for r in emitted if r.get('Kind') == 'Detection']
