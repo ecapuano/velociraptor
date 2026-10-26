@@ -1,0 +1,91 @@
+{
+  "platform": "Windows Server 2022 client -> Ubuntu 22.04 WSL1 server",
+  "status": "PASS",
+  "checks": {
+    "endpoint_fixture": {
+      "uploaded_timelines": 1,
+      "timeline_rows": 5,
+      "output_format": "jsonl",
+      "native_process_execution_logged": true,
+      "temporary_directories_removed": 2,
+      "remaining_hayabusa_processes": 0,
+      "rule_update_default_exercised": false
+    },
+    "endpoint_fixture_default_csv": {
+      "uploaded_timelines": 1,
+      "timeline_rows": 5,
+      "output_format": "csv",
+      "native_process_execution_logged": true,
+      "temporary_directories_removed": 2,
+      "remaining_hayabusa_processes": 0,
+      "rule_update_default_exercised": false
+    },
+    "endpoint_live_default_update": {
+      "uploaded_timelines": 1,
+      "timeline_rows": 1880,
+      "output_format": "jsonl",
+      "native_process_execution_logged": true,
+      "temporary_directories_removed": 2,
+      "remaining_hayabusa_processes": 0,
+      "rule_update_default_exercised": true
+    },
+    "Fixture": {
+      "windows_uploaded_files": 2,
+      "detections": 10,
+      "analysis_output_kinds": [
+        "Detection",
+        "Manifest",
+        "Status",
+        "Timeline"
+      ],
+      "success": true,
+      "input_staging_cleaned": true,
+      "installed_monitor_forwarded_final_status": true
+    },
+    "Live": {
+      "windows_uploaded_files": 3,
+      "detections": 858,
+      "analysis_output_kinds": [
+        "Detection",
+        "Manifest",
+        "Status",
+        "Timeline"
+      ],
+      "success": true,
+      "input_staging_cleaned": true,
+      "installed_monitor_forwarded_final_status": true
+    },
+    "Mixed": {
+      "windows_uploaded_files": 3,
+      "detections": 10,
+      "analysis_output_kinds": [
+        "Detection",
+        "Diagnostic",
+        "Manifest",
+        "Status",
+        "Timeline"
+      ],
+      "success": false,
+      "input_staging_cleaned": true,
+      "installed_monitor_forwarded_final_status": true
+    }
+  },
+  "Server.Analysis.Windows.EventLogs.HayabusaEngine_sha256": "7386f8def2f792004ee5b68bec1a714ae88132fc7fcb1bc4475d15eddd9d1f7d",
+  "Server.Monitor.Windows.EventLogs.HayabusaEngine_sha256": "38476b2f1a8a4e258aece3b5f99edcfe968bf07a79f93d6658966b6dae80d723",
+  "Windows.EventLogs.Hayabusa_sha256": "610751026f4e8ee7411bee317e606f33fdca53e5ac8ae6af1f4e2d9f1f4a260d",
+  "client_os": "windows",
+  "windows_binary_sha256": "686e4f5888fdd66d07ace3b6c1cbd7d2dd0d8d5fb4d3b5d905a7df3341dfb86f",
+  "windows_authenticode": "Valid",
+  "runner_image": "20261022.344.1",
+  "wsl_version": 1,
+  "native_hayabusa_version": "Hayabusa v4.2.0 - Autumn Release",
+  "defender_related_detection_count": 0,
+  "evidence": {
+    "workflow_run_url": "https://github.com/ecapuano/velociraptor/actions/runs/40406134721",
+    "harness_commit": "0c8e6966ca0ae9590fcb347423e735ac855a37d3",
+    "artifact_repository": "ecapuano/velociraptor-docs",
+    "artifact_commit": "e896e64f8edb9d36e33b8c19d9bb82ac63402ae7",
+    "executed_date_utc": "2026-10-26",
+    "defender_limit": "Get-MpThreatDetection returned zero related entries; active protection status and third-party EDR were not measured."
+  }
+}

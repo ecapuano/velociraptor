@@ -96,19 +96,27 @@ production throughput, AV behavior or detection parity between engines.
 
 ## Execution record
 
-The explicitly approved [Windows run 40405498540](https://github.com/ecapuano/velociraptor/actions/runs/40405498540)
+The explicitly approved [Windows run 40406134721](https://github.com/ecapuano/velociraptor/actions/runs/40406134721)
 passed on 2026-10-26 using image `20261022.344.1`, Windows Velociraptor 0.77.2
 with a valid Authenticode signature, Hayabusa 4.2.0 live-response, and WSL1.
-The native endpoint JSONL fixture returned five rows; the default-directory,
-default-rule-update live run returned 1,870 rows. Genuine Windows uploads triggered
-the installed Linux monitor: duplicated fixture produced ten detections, three live
-channel exports produced 857, and mixed valid/corrupt input retained ten findings
-plus diagnostics with `Success=false`. Cleanup checks passed. Defender reported
-zero related detections on this runner; this is not a guarantee about other AV/EDR.
-Live counts are observations from that ephemeral host, not regression expectations.
+The [sanitized result](windows-results.json) records the exact harness/artifact
+commits and artifact SHA256 values.
 
-The report includes an initial API `connection refused` readiness retry under
-`failed_cli`; that recovered before enrollment and does not contradict the PASS.
-The harness now removes that stale readiness marker after startup succeeds.
-The subsequent default-CSV fixture case is prepared but has not yet been executed.
-These cases do not cover every endpoint parameter combination or all Windows versions.
+- Native endpoint fixture: five rows with JSONL and five with default CSV;
+  rule updates disabled for both deterministic cases.
+- Native endpoint live directory with default rule-update setting: 1,880 JSONL
+  rows; update invocation, upload, parseability and cleanup checks passed.
+- Genuine Windows uploads triggered the installed Linux monitor: duplicated
+  fixture produced ten detections; three live channel exports produced 858.
+- Mixed valid/corrupt input retained ten findings and uploaded diagnostics with
+  final `Success=false`. All source staging cleanup checks passed.
+
+Live counts are observations from this ephemeral host, not regression expectations.
+The endpoint and server live scans use different input sets and rule selections;
+these counts are not a detection-coverage comparison.
+
+The test did not disable Defender or change its settings. `Get-MpThreatDetection`
+reported zero related entries. It did not query active protection status or test
+third-party EDR, so this does not establish active AV prevention coverage or a
+universal absence of false positives. These cases do not cover every endpoint
+parameter combination or all Windows versions.
