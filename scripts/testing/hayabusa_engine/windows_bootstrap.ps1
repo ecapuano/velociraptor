@@ -39,7 +39,8 @@ function Start-QuietProcess([string]$Executable, [string[]]$Arguments) {
     return $process
 }
 function Linux-Path([string]$Path) {
-    $result = & wsl.exe -d $distro -- wslpath -a $Path
+    $normalized = $Path.Replace('\', '/')
+    $result = & wsl.exe -d $distro --exec wslpath -a $normalized
     if ($LASTEXITCODE -ne 0) { throw 'Unable to translate Windows path for WSL.' }
     return ($result | Out-String).Trim()
 }
@@ -64,12 +65,12 @@ try {
     if ($LASTEXITCODE -ne 0) { throw 'WSL1 import failed.' }
     $imported = $true
     # The pinned Canonical manifest includes Python3, PyYAML, CA certificates and libpcre3.
-    & wsl.exe -d $distro -- python3 -c 'import yaml, ssl; print("WSL Python dependencies ready")'
+    & wsl.exe -d $distro --exec python3 -c 'import yaml, ssl; print("WSL Python dependencies ready")'
     if ($LASTEXITCODE -ne 0) { throw 'Pinned WSL rootfs dependencies unavailable.' }
     $scriptLinux = Linux-Path (Join-Path $PSScriptRoot 'windows_wsl.py')
     $sharedLinux = Linux-Path $work
     $artifactLinux = Linux-Path $ArtifactDirectory
-    $server = Start-QuietProcess 'wsl.exe' @('-d', $distro, '--', 'python3', $scriptLinux,
+    $server = Start-QuietProcess 'wsl.exe' @('-d', $distro, '--exec', 'python3', $scriptLinux,
         '--shared', $sharedLinux, '--windows-shared', $work, '--artifacts', $artifactLinux)
     $deadline = [DateTime]::UtcNow.AddMinutes(4)
     while (-not (Test-Path (Join-Path $work 'ready'))) {
