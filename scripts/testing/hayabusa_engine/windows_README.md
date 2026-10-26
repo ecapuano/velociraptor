@@ -27,7 +27,7 @@ host, install a persistent service, or require repository secrets.
    `UpdateRules=Y` (JSONL, no predetermined row count). Check process execution
    logs, timeline upload/parseability, Results agreement, absence of collection
    errors, removal of temporary executable directories, and no remaining Hayabusa
-   process via a separate native Windows audit artifact. A native `--version`
+   process via a separate native Windows audit artifact. A native `dfir-timeline --help` banner
    preflight uses the hash-pinned live-response package. The test never disables
    Defender; the sanitized report includes a count of related Defender detections
    when available. The existing artifact does not expose the updater exit code;

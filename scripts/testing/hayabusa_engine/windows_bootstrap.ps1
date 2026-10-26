@@ -53,8 +53,9 @@ try {
     Copy-Item -LiteralPath (Join-Path $work 'security.evtx') -Destination $fixtureDirectory
     $preflight = Join-Path $work 'hayabusa-preflight'
     Expand-Archive -LiteralPath (Join-Path $work 'hayabusa-live-response.zip') -DestinationPath $preflight
-    $nativeVersion = & (Join-Path $preflight 'hayabusa-4.2.0-win-x64.exe') --version
+    $nativeVersion = & (Join-Path $preflight 'hayabusa-4.2.0-win-x64.exe') dfir-timeline --help
     if ($LASTEXITCODE -ne 0 -or ($nativeVersion | Out-String) -notmatch '4\.2\.0') { throw 'Native Windows Hayabusa version preflight failed.' }
+    $nativeVersion = (($nativeVersion | Out-String) -split "`n" | Where-Object { $_ -match '^Hayabusa v4\.2\.0' } | Select-Object -First 1).Trim()
     Remove-Item -LiteralPath $preflight -Recurse -Force
     $signature = Get-AuthenticodeSignature -LiteralPath (Join-Path $work 'velociraptor.exe')
     if ($signature.Status -ne 'Valid') { throw 'Windows Velociraptor Authenticode verification failed.' }
