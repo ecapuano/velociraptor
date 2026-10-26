@@ -1,65 +1,65 @@
 {
-  "artifact_sha256": "77ba32e0beb76b6b8a80ab78c359bcdf0bd9e8a3e91c5b9f24743478b4775fbe",
+  "artifact_sha256": "7386f8def2f792004ee5b68bec1a714ae88132fc7fcb1bc4475d15eddd9d1f7d",
   "velociraptor_version": "name: velociraptor\nversion: 0.77.2\ncommit: c0c9dd609\nbuild_time: \"2026-08-10T00:58:52Z\"\ncompiler: go1.25.3\nsystem: linux\narchitecture: amd64",
+  "monitor_sha256": "38476b2f1a8a4e258aece3b5f99edcfe968bf07a79f93d6658966b6dae80d723",
   "success": {
-    "flow_id": "F.DBFRMIM6UTIJQ",
+    "flow_id": "F.DBFSA2V2D9K6Q",
     "timeline_rows": 287,
     "detection_rows": 287,
     "uploads": 2
   },
   "duplicate": {
-    "flow_id": "F.DBFRMJG57J7C8",
+    "flow_id": "F.DBFSA3UPQLJ1E",
     "timeline_rows": 574,
     "detection_rows": 574,
     "uploads": 2
   },
   "empty_timeline": {
-    "flow_id": "F.DBFRMKVANE0S4",
+    "flow_id": "F.DBFSA4U7FJE8A",
     "timeline_rows": 0,
     "detection_rows": 0,
     "uploads": 2
   },
   "default_medium": {
-    "flow_id": "F.DBFRMLUTS6PRG",
+    "flow_id": "F.DBFSA5O6S8ETA",
     "timeline_rows": 5,
     "detection_rows": 5,
     "uploads": 2
   },
   "renamed": {
-    "flow_id": "F.DBFRMMT8VMUCC",
+    "flow_id": "F.DBFSA6RA0NTDG",
     "timeline_rows": 287,
     "detection_rows": 287,
     "uploads": 2
   },
   "missing_file": {
-    "flow_id": "F.DBFRMNO8M120E",
+    "flow_id": "F.DBFSA7OHCPPLM",
     "uploads": 0
   },
   "missing_collection": {
-    "flow_id": "F.DBFRMO4FVCGVM",
+    "flow_id": "F.DBFSA7S11QMOO",
     "uploads": 0
   },
   "missing_parameters": {
-    "flow_id": "F.DBFRMOBRDQ4N6",
+    "flow_id": "F.DBFSA84NME42S",
     "uploads": 0
   },
   "invalid_threads": {
-    "flow_id": "F.DBFRMOCHD1886",
+    "flow_id": "F.DBFSA8EDB13A2",
     "uploads": 0
   },
   "invalid_level": {
-    "flow_id": "F.DBFRMOGT6BO0I",
+    "flow_id": "F.DBFSA8C681EM0",
     "uploads": 0
   },
   "hayabusa_failure": {
-    "flow_id": "F.DBFRMOPBUPRM8",
+    "flow_id": "F.DBFSA8LF249RK",
     "uploads": 1
   },
-  "monitor_sha256": "c6d8260a9d773a2b352b597dc1f10035a84889ce3b53f4589fa9ccfcb4598167",
   "monitor": {
     "analysis_flows": [
-      "F.DBFRMQ29T3ONM",
-      "F.DBFRMR192BTG4"
+      "F.DBFSA9KPART24",
+      "F.DBFSAAMOSLUU2"
     ],
     "detection_rows": 10,
     "serialized": true,
@@ -85,5 +85,153 @@
       ],
       "Ready": false
     }
-  ]
+  ],
+  "extended": {
+    "exit_zero_without_output": {
+      "flow_id": "F.DBFSABPELCK3E",
+      "status": [
+        {
+          "Kind": "Status",
+          "ClientId": "C.123456",
+          "FlowId": "F.Success",
+          "Success": false,
+          "EngineSuccess": false,
+          "HasDiagnostics": false,
+          "UploadsComplete": false,
+          "DiagnosticCount": 0,
+          "UploadedDiagnosticCount": 0,
+          "InputCount": 1,
+          "StagedCount": 1,
+          "ReturnCode": 0
+        }
+      ],
+      "uploads": 1,
+      "errors": [
+        "Hayabusa exited successfully but its timeline is missing.\n"
+      ]
+    },
+    "timeout": {
+      "flow_id": "F.DBFSACMMF0HAM",
+      "status": [],
+      "uploads": 0,
+      "errors": [
+        "Query timed out after 3 seconds\n",
+        "Hayabusa failed; see command output in collection logs.\n"
+      ]
+    },
+    "explicit_cancellation": {
+      "flow_id": "F.DBFSADHFGOV4Q",
+      "external_process_stopped": true
+    },
+    "corrupt_input": {
+      "flow_id": "F.DBFSAE4FAGDMI",
+      "status": [
+        {
+          "Kind": "Status",
+          "ClientId": "C.123456",
+          "FlowId": "F.Corrupt",
+          "Success": false,
+          "EngineSuccess": true,
+          "HasDiagnostics": true,
+          "UploadsComplete": true,
+          "DiagnosticCount": 1,
+          "UploadedDiagnosticCount": 1,
+          "InputCount": 1,
+          "StagedCount": 1,
+          "ReturnCode": 0
+        }
+      ],
+      "uploads": 3,
+      "errors": [],
+      "potential_false_success": false
+    },
+    "mixed_corrupt_input": {
+      "flow_id": "F.DBFSAF6J8IJ5I",
+      "status": [
+        {
+          "Kind": "Status",
+          "ClientId": "C.123456",
+          "FlowId": "F.MixedCorrupt",
+          "Success": false,
+          "EngineSuccess": true,
+          "HasDiagnostics": true,
+          "UploadsComplete": true,
+          "DiagnosticCount": 1,
+          "UploadedDiagnosticCount": 1,
+          "InputCount": 2,
+          "StagedCount": 2,
+          "ReturnCode": 0
+        }
+      ],
+      "detection_rows": 287,
+      "uploads": 3
+    },
+    "row_limit": {
+      "flow_id": "F.DBFSAG8R5Q1JG",
+      "state": "ERROR",
+      "status": [],
+      "rows": 4,
+      "uploads": 2,
+      "errors": []
+    },
+    "upload_limit": {
+      "flow_id": "F.DBFSAHETR7F8O",
+      "state": "ERROR",
+      "status": [],
+      "rows": 0,
+      "uploads": 1,
+      "errors": []
+    },
+    "installed_monitor_real_linux_client": {
+      "client_id": "C.85ab30e2231e98be",
+      "source_flow": "F.DBFSAJLSRF5U6",
+      "analysis_flow": "F.DBFSAJJN81BC2",
+      "upload_count": 2,
+      "detection_rows": 10,
+      "status": [
+        {
+          "Kind": "Status",
+          "ClientId": "C.85ab30e2231e98be",
+          "FlowId": "F.DBFSAJLSRF5U6",
+          "Success": true,
+          "EngineSuccess": true,
+          "HasDiagnostics": false,
+          "UploadsComplete": true,
+          "DiagnosticCount": 0,
+          "UploadedDiagnosticCount": 0,
+          "InputCount": 2,
+          "StagedCount": 2,
+          "ReturnCode": 0,
+          "AnalysisFlowId": "F.DBFSAJJN81BC2",
+          "_Source": "VelociraptorServer",
+          "_ts": 1793049938582
+        }
+      ]
+    },
+    "installed_monitor_timeout": {
+      "source_flow": "F.DBFSALGACCSP2",
+      "status": [
+        {
+          "Kind": "AnalysisStatus",
+          "ClientId": "C.85ab30e2231e98be",
+          "FlowId": "F.DBFSALGACCSP2",
+          "AnalysisFlowId": "F.DBFSALJAI0LBQ",
+          "State": "ERROR",
+          "Message": "Query timed out after 3 seconds\n",
+          "_Source": "VelociraptorServer",
+          "_ts": 1793049946598
+        }
+      ],
+      "external_process_stopped": true
+    },
+    "early_error_monitor": {
+      "status_rows": 2,
+      "analysis_rows": 2,
+      "serialized": true,
+      "source_flows": [
+        "F.DBFSANG5TB2E0",
+        "F.DBFSANMLTUOS4"
+      ]
+    }
+  }
 }

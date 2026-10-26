@@ -54,3 +54,38 @@ Both artifact snapshots are copied into the isolated definitions directory;
 `report.json` records their SHA256 hashes and the Velociraptor version. Tests also
 check medium-level output (five detections), renamed EVTX selection, invalid
 parameters, and successful/failed status rows with external process return codes.
+
+## Extended Linux lifecycle tests
+
+Add `--extended` to run the baseline suite followed by `linux_extended.py`.
+This requires PyYAML. `--extended-only` skips baseline cases during iteration.
+The extended cases use a real Linux client process with its own writeback and
+TLS connection to the isolated frontend. They install the monitor with
+`add_server_monitoring()`, upload duplicate EVTX fixtures through the client,
+and inspect persisted Server Events results from genuine flow completion.
+This exercises client transport and installed monitoring; it is not a Windows
+endpoint or live Windows event-log collection test.
+
+Other extended cases cover exit-zero with missing output, collector timeout,
+explicit cancellation and external-process cleanup, corrupt and mixed EVTX,
+row/upload limits, and installed-monitor timeout reporting. Executable failure
+and sleep cases substitute test commands in isolated artifact clones; normal
+and corrupt-input cases invoke real Hayabusa. `extended-progress.json` retains
+completed case evidence even if a later test fails.
+
+The tests exposed two issues fixed in the proposed analyzer: Hayabusa can exit
+zero after rejecting corrupt EVTX, so generated diagnostics must be preserved
+and make final Success false; and Velociraptor 0.77.2 does not apply its collection
+deadline while draining unnamed materialized LET statements. Wrapping work in
+a named query makes its watchdog active while external execution runs. Final
+Status is emitted after detections so truncation cannot leave an early success
+marker suggesting complete results.
+
+A third regression test logs an error before a 20-second external operation and
+queues two real client collections. Velociraptor can expose state ERROR while
+execution_duration is still zero. The previous monitor started the second
+analysis early and forwarded neither final status. The monitor now requires
+positive execution_duration before reading results or starting the next scan.
+`early-error-regression.json` records the prior monitor's approximately
+8.3-second overlap; the final extended run requires both final statuses and
+nonoverlapping collection logs.

@@ -1,0 +1,21 @@
+{
+  "monitor_sha256": "ed5589e66ee57863430bbba5f22fd9f9ecff750c3ea37bb2db2b6ac9b6d24f35",
+  "fixture": "Each cloned analyzer logs ERROR then executes sleep20 before final status. Monitor starts second before first completes.",
+  "observations": [
+    {
+      "flow_id": "F.DBFS8MNS61FF8",
+      "exec_start": 1793049691216541,
+      "observed_state": "ERROR",
+      "observed_duration": 21221315,
+      "collection_log_end": 1793049711295945
+    },
+    {
+      "flow_id": "F.DBFS8PMTD13H6",
+      "exec_start": 1793049703016518,
+      "observed_state": "ERROR",
+      "observed_duration": 21013660,
+      "collection_log_end": 1793049723097429
+    }
+  ],
+  "overlap_microseconds": 8279427
+}
