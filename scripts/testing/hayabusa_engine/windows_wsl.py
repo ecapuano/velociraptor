@@ -106,6 +106,7 @@ def main():
             except RuntimeError:
                 return False
         poll(api_ready, 60)
+        report.pop('failed_cli', None)  # Initial connection-refused retries are expected.
         client_config = yaml.safe_load(run('-c', config, 'config', 'client'))
         client_config['Client'].update(server_urls=['https://127.0.0.1:28990/'],
             writeback_windows=args.windows_shared+'\\client.writeback.yaml', min_poll=1, max_poll=1)
@@ -155,6 +156,8 @@ SELECT * FROM foreach(row=["System", "Application", "Security"], query={
         for label, options in [
             ('endpoint_fixture', {'EvtxDirectory': root+'\\endpoint-fixture',
                 'UpdateRules': 'N', 'OutputFormat': 'jsonl', 'MinimalLevel': 'medium'}),
+            ('endpoint_fixture_default_csv', {'EvtxDirectory': root+'\\endpoint-fixture',
+                'UpdateRules': 'N', 'MinimalLevel': 'medium'}),
             # Omit UpdateRules and EvtxDirectory: exercise the artifact's real defaults.
             ('endpoint_live_default_update', {'OutputFormat': 'jsonl'}),
         ]:
@@ -170,13 +173,17 @@ SELECT * FROM foreach(row=["System", "Application", "Security"], query={
             files = [r for r in files if r.get('Type') != 'idx']
             assert len(files) == 1 and files[0]['file_size'] > 0, 'Missing endpoint timeline upload'
             # Aggregate on the server: live event rows can exceed gRPC's message limit.
-            # Compare nonempty JSONL line count too, so silently skipped bad JSON fails.
-            parsed = query(f'SELECT count() AS N FROM foreach(row={{ SELECT * FROM uploads(client_id={json.dumps(client_id)}, flow_id={json.dumps(flow)}) WHERE NOT Type = "idx" }}, query={{ SELECT * FROM parse_jsonl(filename=vfs_path, accessor="fs") }}) GROUP BY 1')
-            raw_lines = query(f'SELECT count() AS N FROM foreach(row={{ SELECT * FROM uploads(client_id={json.dumps(client_id)}, flow_id={json.dumps(flow)}) WHERE NOT Type = "idx" }}, query={{ SELECT * FROM parse_lines(filename=vfs_path, accessor="fs") WHERE Line != "" }}) GROUP BY 1')
+            output_format = options.get('OutputFormat', 'csv')
+            parser_plugin = 'parse_jsonl' if output_format == 'jsonl' else 'parse_csv'
+            parsed = query(f'SELECT count() AS N FROM foreach(row={{ SELECT * FROM uploads(client_id={json.dumps(client_id)}, flow_id={json.dumps(flow)}) WHERE NOT Type = "idx" }}, query={{ SELECT * FROM {parser_plugin}(filename=vfs_path, accessor="fs") }}) GROUP BY 1')
             emitted = query(f'SELECT count() AS N FROM source(client_id={json.dumps(client_id)}, flow_id={json.dumps(flow)}, artifact="{ENDPOINT}/Results") GROUP BY 1')
             parsed_count = parsed[0]['N'] if parsed else 0
-            assert parsed_count == (emitted[0]['N'] if emitted else 0) == (raw_lines[0]['N'] if raw_lines else 0), 'Uploaded timeline and endpoint Results differ or contain invalid JSON'
-            if label == 'endpoint_fixture':
+            assert parsed_count == (emitted[0]['N'] if emitted else 0), 'Uploaded timeline and endpoint Results differ'
+            if output_format == 'jsonl':
+                # Every nonempty JSONL line must parse; CSV may have multiline quoted fields.
+                raw_lines = query(f'SELECT count() AS N FROM foreach(row={{ SELECT * FROM uploads(client_id={json.dumps(client_id)}, flow_id={json.dumps(flow)}) WHERE NOT Type = "idx" }}, query={{ SELECT * FROM parse_lines(filename=vfs_path, accessor="fs") WHERE Line != "" }}) GROUP BY 1')
+                assert parsed_count == (raw_lines[0]['N'] if raw_lines else 0), 'Timeline contains invalid JSON'
+            if label != 'endpoint_live_default_update':
                 assert parsed_count == 5, 'Pinned live-response fixture count changed; investigate rule/package differences'
             # Verify cleanup on the native Windows client, not by interpreting its paths in WSL.
             import re
@@ -189,7 +196,7 @@ SELECT * FROM foreach(row=["System", "Application", "Security"], query={
             audit_flow = client_collection(audit_name)
             audited = query(f'SELECT * FROM source(client_id={json.dumps(client_id)}, flow_id={json.dumps(audit_flow)}, artifact="{audit_name}/Uploads")')
             assert len(audited) == len(removed) and all(r['Kind'] == 'Path' and not r.get('Stat') for r in audited), 'Endpoint executable or process survived cleanup'
-            report['checks'][label] = {'uploaded_timelines': len(files), 'timeline_rows': parsed_count,
+            report['checks'][label] = {'uploaded_timelines': len(files), 'timeline_rows': parsed_count, 'output_format': output_format,
                 'native_process_execution_logged': True, 'temporary_directories_removed': len(removed),
                 'remaining_hayabusa_processes': 0, 'rule_update_default_exercised': label.endswith('update')}
 

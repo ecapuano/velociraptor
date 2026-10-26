@@ -3,7 +3,8 @@
 This GitHub Actions workflow is prepared locally. It runs on pushes only to the
 dedicated `hayabusa-windows-validation` branch, or by manual dispatch if already
 registered. It does not require a default-branch change. Preparing these
-files does not run a Windows test. Publication and execution require the user's
+files does not itself run a Windows test. An explicitly approved run has now passed;
+see the execution record below. Publication and execution require the user's
 explicit approval; do not push or dispatch it as part of local validation.
 
 The workflow needs an immutable commit containing the reviewed Exchange analyzer,
@@ -23,7 +24,8 @@ host, install a persistent service, or require repository secrets.
    signature. Start a real native Windows client and verify Windows enrollment.
 3. Run the existing, unmodified `Windows.EventLogs.Hayabusa` artifact directly on
    Windows, first on a fixture-only directory (`UpdateRules=N`, JSONL, medium;
-   expected five rows), then with its default live Windows directory and default
+   expected five rows), also on that fixture with default CSV output (five rows),
+   then with its default live Windows directory and default
    `UpdateRules=Y` (JSONL, no predetermined row count). Check process execution
    logs, timeline upload/parseability, Results agreement, absence of collection
    errors, removal of temporary executable directories, and no remaining Hayabusa
@@ -92,7 +94,21 @@ endpoint artifact runs natively on Windows; only the server uses WSL1.
 A PASS does not validate WSL2, all Windows versions, remote TLS/firewall setups,
 production throughput, AV behavior or detection parity between engines.
 
-The Windows/WSL run has not been executed during preparation. Local checks can
-validate Python syntax, workflow syntax and the generated upload artifact's VQL;
-they cannot prove Windows signing, WSL import, Windows event permissions, or the
-cross-platform runtime path. Report those separately after an approved execution.
+## Execution record
+
+The explicitly approved [Windows run 40405498540](https://github.com/ecapuano/velociraptor/actions/runs/40405498540)
+passed on 2026-10-26 using image `20261022.344.1`, Windows Velociraptor 0.77.2
+with a valid Authenticode signature, Hayabusa 4.2.0 live-response, and WSL1.
+The native endpoint JSONL fixture returned five rows; the default-directory,
+default-rule-update live run returned 1,870 rows. Genuine Windows uploads triggered
+the installed Linux monitor: duplicated fixture produced ten detections, three live
+channel exports produced 857, and mixed valid/corrupt input retained ten findings
+plus diagnostics with `Success=false`. Cleanup checks passed. Defender reported
+zero related detections on this runner; this is not a guarantee about other AV/EDR.
+Live counts are observations from that ephemeral host, not regression expectations.
+
+The report includes an initial API `connection refused` readiness retry under
+`failed_cli`; that recovered before enrollment and does not contradict the PASS.
+The harness now removes that stale readiness marker after startup succeeds.
+The subsequent default-CSV fixture case is prepared but has not yet been executed.
+These cases do not cover every endpoint parameter combination or all Windows versions.
