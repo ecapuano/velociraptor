@@ -1,0 +1,66 @@
+name: Hayabusa engine Windows to Linux integration
+
+# A push to this dedicated branch starts the job; publication requires user approval.
+on:
+  push:
+    branches: [hayabusa-windows-validation]
+  workflow_dispatch:
+    inputs:
+      artifact_repository:
+        description: Optional override of windows_artifacts.json repository (owner/repo)
+        type: string
+        required: false
+      artifact_ref:
+        description: Optional override of windows_artifacts.json exact 40-character commit SHA
+        type: string
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  windows-to-linux:
+    runs-on: windows-2022
+    timeout-minutes: 45
+    steps:
+      - name: Checkout harness
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          persist-credentials: false
+          path: harness
+      - name: Validate immutable artifact source
+        id: artifact-source
+        shell: pwsh
+        env:
+          ARTIFACT_REPOSITORY: ${{ inputs.artifact_repository }}
+          ARTIFACT_REF: ${{ inputs.artifact_ref }}
+        run: |
+          $source = Get-Content -Raw ./harness/scripts/testing/hayabusa_engine/windows_artifacts.json | ConvertFrom-Json
+          $repository = if ($env:ARTIFACT_REPOSITORY) { $env:ARTIFACT_REPOSITORY } else { $source.repository }
+          $ref = if ($env:ARTIFACT_REF) { $env:ARTIFACT_REF } else { $source.ref }
+          if ($repository -notmatch '^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$') { throw 'Set the reviewed artifact repository' }
+          if ($ref -notmatch '^[0-9a-fA-F]{40}$') { throw 'Set the reviewed immutable full commit SHA' }
+          "repository=$repository" >> $env:GITHUB_OUTPUT
+          "ref=$ref" >> $env:GITHUB_OUTPUT
+      - name: Checkout reviewed Exchange artifacts
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          repository: ${{ steps.artifact-source.outputs.repository }}
+          ref: ${{ steps.artifact-source.outputs.ref }}
+          persist-credentials: false
+          path: exchange
+          sparse-checkout: content/exchange/artifacts
+      - name: Native endpoint and Windows to Linux integration
+        shell: pwsh
+        run: |
+          & ./harness/scripts/testing/hayabusa_engine/windows_bootstrap.ps1 `
+            -ArtifactDirectory "$env:GITHUB_WORKSPACE/exchange/content/exchange/artifacts" `
+            -ReportDirectory "$env:GITHUB_WORKSPACE/sanitized-report"
+      - name: Retain sanitized result only
+        if: always()
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1
+        with:
+          name: hayabusa-windows-linux-result
+          path: sanitized-report/windows-report.json
+          if-no-files-found: warn
+          retention-days: 7
