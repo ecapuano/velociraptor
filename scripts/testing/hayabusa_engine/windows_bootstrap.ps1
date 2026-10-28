@@ -48,15 +48,15 @@ try {
     Download-Verified 'https://cloud-images.ubuntu.com/wsl/releases/22.04/current/ubuntu-jammy-wsl-amd64-wsl.rootfs.tar.gz' (Join-Path $work 'rootfs.tar.gz') 'de9f6149da07b90350a3ccd94b4858b82fef71f0ec2982acb93de583c4c87585'
     Download-Verified 'https://github.com/Velocidex/velociraptor/releases/download/v0.77.2/velociraptor-v0.77.2-windows-amd64.exe' (Join-Path $work 'velociraptor.exe') '686e4f5888fdd66d07ace3b6c1cbd7d2dd0d8d5fb4d3b5d905a7df3341dfb86f'
     Download-Verified 'https://raw.githubusercontent.com/omerbenamram/evtx/8930398ff61c56bdc0f8ab5781e4093ee34d9026/samples/security.evtx' (Join-Path $work 'security.evtx') '5f29a03cf8c1b4bfbd82c4074ccc81ecfe85d7ee15375afc352ed5025c9a4d8d'
-    Download-Verified 'https://github.com/Yamato-Security/hayabusa/releases/download/v4.2.0/hayabusa-4.2.0-win-x64-live-response.zip' (Join-Path $work 'hayabusa-live-response.zip') '77a596960e51c5a53e56e7f6c6eaae619932253dffcbd5d40d790155c828c459'
+    Download-Verified 'https://github.com/Yamato-Security/hayabusa/releases/download/v4.3.0/hayabusa-4.3.0-win-x64-live-response.zip' (Join-Path $work 'hayabusa-live-response.zip') 'a4a84bd39c8f3943c96c7a4783927de98f21529ae4780a73cabae90562700783'
     $fixtureDirectory = Join-Path $work 'endpoint-fixture'
     New-Item -ItemType Directory -Path $fixtureDirectory | Out-Null
     Copy-Item -LiteralPath (Join-Path $work 'security.evtx') -Destination $fixtureDirectory
     $preflight = Join-Path $work 'hayabusa-preflight'
     Expand-Archive -LiteralPath (Join-Path $work 'hayabusa-live-response.zip') -DestinationPath $preflight
-    $nativeVersion = & (Join-Path $preflight 'hayabusa-4.2.0-win-x64.exe') dfir-timeline --help
-    if ($LASTEXITCODE -ne 0 -or ($nativeVersion | Out-String) -notmatch '4\.2\.0') { throw 'Native Windows Hayabusa version preflight failed.' }
-    $nativeVersion = (($nativeVersion | Out-String) -split "`n" | Where-Object { $_ -match '^Hayabusa v4\.2\.0' } | Select-Object -First 1).Trim()
+    $nativeVersion = & (Join-Path $preflight 'hayabusa-4.3.0-win-x64.exe') dfir-timeline --help
+    if ($LASTEXITCODE -ne 0 -or ($nativeVersion | Out-String) -notmatch '4\.3\.0') { throw 'Native Windows Hayabusa version preflight failed.' }
+    $nativeVersion = (($nativeVersion | Out-String) -split "`n" | Where-Object { $_ -match '^Hayabusa v4\.3\.0' } | Select-Object -First 1).Trim()
     Remove-Item -LiteralPath $preflight -Recurse -Force
     $signature = Get-AuthenticodeSignature -LiteralPath (Join-Path $work 'velociraptor.exe')
     if ($signature.Status -ne 'Valid') { throw 'Windows Velociraptor Authenticode verification failed.' }

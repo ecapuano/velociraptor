@@ -166,7 +166,7 @@ SELECT * FROM foreach(row=["System", "Application", "Security"], query={
             logs = query(f'SELECT * FROM flow_logs(client_id={json.dumps(client_id)}, flow_id={json.dumps(flow)})')
             assert not any(r.get('Level') == 'ERROR' for r in logs), 'Endpoint artifact logged execution errors'
             messages = '\n'.join(r.get('message', '') for r in logs)
-            assert 'hayabusa-4.2.0-win-x64.exe' in messages and 'execve' in messages, 'Missing native process execution evidence'
+            assert 'hayabusa-4.3.0-win-x64.exe' in messages and 'execve' in messages, 'Missing native process execution evidence'
             if label == 'endpoint_live_default_update':
                 assert 'update-rules' in messages, 'Default rule update did not execute'
             files = query(f'SELECT * FROM uploads(client_id={json.dumps(client_id)}, flow_id={json.dumps(flow)})')

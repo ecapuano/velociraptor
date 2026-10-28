@@ -34,7 +34,7 @@ host, install a persistent service, or require repository secrets.
    Defender; the sanitized report includes a count of related Defender detections
    when available. The existing artifact does not expose the updater exit code;
    this check proves the default update command ran, not that its network update
-   completed successfully. Upstream [4.2.0 updater code](https://github.com/Yamato-Security/hayabusa/blob/v4.2.0/src/main.rs#L1080)
+   completed successfully. Upstream [4.3.0 updater code](https://github.com/Yamato-Security/hayabusa/blob/v4.3.0/src/main.rs)
    detects `encoded_rules.yml` and downloads the encoded rules/config files; it
    takes the plain-rule git-clone path only when that encoded file is absent.
 4. Install the actual `Server.Monitor.Windows.EventLogs.HayabusaEngine` using
@@ -80,7 +80,10 @@ script from a third-party action is needed.
   The digest was obtained from the official release asset metadata. Runtime also
   requires Windows Authenticode status `Valid`.
 - Linux Velociraptor and the public EVTX source/hash are pinned in `test.py`.
-  Hayabusa 4.2.0 and its archive digest are pinned in the reviewed analyzer YAML.
+  Hayabusa 4.3.0 and its archive digest are pinned in the reviewed analyzer YAML.
+  The Windows live-response archive SHA256 is
+  `a4a84bd39c8f3943c96c7a4783927de98f21529ae4780a73cabae90562700783`,
+  verified against the official [4.3.0 release](https://github.com/Yamato-Security/hayabusa/releases/tag/v4.3.0).
 - Checkout and report-upload actions use full commit IDs already used by this
   repository's workflows. The job grants `contents: read` only.
 
@@ -95,6 +98,9 @@ A PASS does not validate WSL2, all Windows versions, remote TLS/firewall setups,
 production throughput, AV behavior or detection parity between engines.
 
 ## Execution record
+
+The harness now targets 4.3.0; its new Windows run is pending. The record below
+is historical evidence for 4.2.0 and does not validate the upgraded release.
 
 The explicitly approved [Windows run 40406134721](https://github.com/ecapuano/velociraptor/actions/runs/40406134721)
 passed on 2026-10-26 using image `20261022.344.1`, Windows Velociraptor 0.77.2
