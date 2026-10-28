@@ -53,6 +53,43 @@ def exercise(ctx):
             assert not process.stdout, process.stdout
         results[label] = dict(flow_id=flow, status=states, uploads=len(uploads), errors=[r['message'] for r in logs if r['Level']=='ERROR'])
 
+    # Fault injection tests retention, not a claimed Hayabusa crash. Invalid or
+    # truncated raw bytes must survive without being parsed into detections.
+    for label, payload, diagnostic in [
+        ('partial_nonzero_diagnostic', b'{"RuleTitle":"Injected partial"}\n', True),
+        ('partial_nonzero', b'{"RuleTitle":"Injected partial"}\n', False),
+        ('truncated_nonzero', b'{"RuleTitle":"unfinished\xff', False),
+    ]:
+        name = 'Custom.Test.' + label
+        fixture_path = work/(label+'.jsonl')
+        fixture_path.write_bytes(payload)
+        shell = 'cp "$1" "$2"; '
+        if diagnostic:
+            shell += 'mkdir -p "$3/logs"; printf "Injected failure\\n" > "$3/logs/errorlog-injected.log"; '
+        shell += 'exit 7'
+        replacement = 'execve(argv=["/bin/bash", "-c", '+json.dumps(shell)+', "partial-test", '+json.dumps(str(fixture_path))+', Timeline, HayabusaDir],'
+        text = original.replace('name: '+NAME, 'name: '+name, 1)
+        text, changed = re.subn(r'execve\(argv=\[HBExe,.*?\],', lambda _: replacement, text, count=1, flags=re.S)
+        assert changed == 1
+        install(name, text)
+        flow, base, logs, messages, uploads = collect('F.Success', artifact=name)
+        rows = rows_for(flow, name)
+        states = status(flow, name)
+        assert len(states) == 1 and states[0]['ReturnCode'] == 7, states
+        assert states[0]['Success'] is False and states[0]['EngineSuccess'] is False, states
+        assert states[0]['HasDiagnostics'] is diagnostic and states[0]['UploadsComplete'] is True, states
+        assert not any(row['Kind'] == 'Detection' for row in rows), rows
+        assert sum(row['Kind'] == 'Timeline' for row in rows) == 1, rows
+        assert sum(row['Kind'] == 'Manifest' for row in rows) == 1, rows
+        timelines = [path for path in uploads if path.name == 'hayabusa_results.jsonl']
+        assert len(timelines) == 1 and timelines[0].read_bytes() == payload, uploads
+        assert len([row for row in rows if row['Kind']=='Diagnostic']) == int(diagnostic), rows
+        if diagnostic:
+            assert any(path.read_bytes() == b'Injected failure\n' for path in uploads), uploads
+        assert rows[-1]['Kind'] == 'Status', rows
+        results[label] = dict(flow_id=flow, status=states, raw_timeline_bytes=len(payload),
+                             byte_exact=True, detection_rows=0, diagnostic_retained=diagnostic)
+
     # Explicit cancellation must stop an in-flight external process and clean staging.
     cancel_flow = query('SELECT collect_client(client_id="server", artifacts=["Custom.Test.timeout"], '
                         'env=dict(ClientId="C.123456", FlowId="F.Success"), timeout=300) AS Flow FROM scope()')[0]['Flow']['flow_id']

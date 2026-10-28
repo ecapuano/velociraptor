@@ -1,0 +1,197 @@
+{
+  "0.77.2": {
+    "version": "name: velociraptor\nversion: 0.77.2\ncommit: c0c9dd609\nbuild_time: \"2026-08-10T00:58:52Z\"\ncompiler: go1.25.3\nsystem: linux\narchitecture: amd64",
+    "binary_sha256": "6c4c23c466d892788ff56ddcd3a31f844e4c0d797ade454c5e2625eb9e427077",
+    "requested_timeout_seconds": 3,
+    "sleep_seconds": 8,
+    "definitions": {
+      "Materialized": "LET Wait <= SELECT sleep(time=8) AS Slept FROM scope()\nSELECT * FROM Wait",
+      "Wrapped": "SELECT * FROM query(inherit=TRUE, query='''\nLET Wait <= SELECT sleep(time=8) AS Slept FROM scope()\nSELECT * FROM Wait\n''')",
+      "Lazy": "LET Wait = SELECT sleep(time=8) AS Slept FROM scope()\nSELECT * FROM Wait"
+    },
+    "cases": [
+      {
+        "variant": "Materialized",
+        "flow_id": "F.DBH43C9SVN16O",
+        "schedule_vql": "SELECT collect_client(client_id=\"server\", artifacts=[\"Custom.Review.Timeout.Materialized\"], timeout=3) AS Flow FROM scope()",
+        "wall_seconds": 8.447,
+        "execution_duration_seconds": 8.002421,
+        "stored_request_timeout": 3,
+        "state": "ERROR",
+        "rows": [],
+        "errors": [
+          "Query timed out after 8 seconds"
+        ],
+        "after_deadline_sample": {
+          "elapsed_seconds": 4.175,
+          "state": "RUNNING",
+          "execution_duration": 0
+        }
+      },
+      {
+        "variant": "Wrapped",
+        "flow_id": "F.DBH43E9VMUJ6O",
+        "schedule_vql": "SELECT collect_client(client_id=\"server\", artifacts=[\"Custom.Review.Timeout.Wrapped\"], timeout=3) AS Flow FROM scope()",
+        "wall_seconds": 3.373,
+        "execution_duration_seconds": 3.000702,
+        "stored_request_timeout": 3,
+        "state": "ERROR",
+        "rows": [],
+        "errors": [
+          "Query timed out after 3 seconds"
+        ],
+        "after_deadline_sample": null
+      },
+      {
+        "variant": "Lazy",
+        "flow_id": "F.DBH43FC23OR9M",
+        "schedule_vql": "SELECT collect_client(client_id=\"server\", artifacts=[\"Custom.Review.Timeout.Lazy\"], timeout=3) AS Flow FROM scope()",
+        "wall_seconds": 3.559,
+        "execution_duration_seconds": 3.00024,
+        "stored_request_timeout": 3,
+        "state": "ERROR",
+        "rows": [],
+        "errors": [
+          "Query timed out after 3 seconds"
+        ],
+        "after_deadline_sample": null
+      },
+      {
+        "variant": "Materialized",
+        "flow_id": "F.DBH43GCLUEJ5M",
+        "schedule_vql": "SELECT collect_client(client_id=\"server\", artifacts=[\"Custom.Review.Timeout.Materialized\"], timeout=3) AS Flow FROM scope()",
+        "wall_seconds": 8.611,
+        "execution_duration_seconds": 8.002014,
+        "stored_request_timeout": 3,
+        "state": "ERROR",
+        "rows": [
+          {
+            "Slept": true
+          }
+        ],
+        "errors": [
+          "Query timed out after 8 seconds"
+        ],
+        "after_deadline_sample": {
+          "elapsed_seconds": 4.418,
+          "state": "RUNNING",
+          "execution_duration": 0
+        }
+      },
+      {
+        "variant": "Wrapped",
+        "flow_id": "F.DBH43IECSDVL4",
+        "schedule_vql": "SELECT collect_client(client_id=\"server\", artifacts=[\"Custom.Review.Timeout.Wrapped\"], timeout=3) AS Flow FROM scope()",
+        "wall_seconds": 3.449,
+        "execution_duration_seconds": 3.000593,
+        "stored_request_timeout": 3,
+        "state": "ERROR",
+        "rows": [],
+        "errors": [
+          "Query timed out after 3 seconds"
+        ],
+        "after_deadline_sample": null
+      }
+    ]
+  },
+  "0.77.3": {
+    "version": "name: velociraptor\nversion: 0.77.3\ncommit: 7d287b0b9\nbuild_time: \"2026-10-04T10:04:24Z\"\ncompiler: go1.27.1\nsystem: linux\narchitecture: amd64",
+    "binary_sha256": "c216b7be6f104da551c302d707a7e5a7126e97db33d3f1fc9d2c3b76cfa00093",
+    "requested_timeout_seconds": 3,
+    "sleep_seconds": 8,
+    "definitions": {
+      "Materialized": "LET Wait <= SELECT sleep(time=8) AS Slept FROM scope()\nSELECT * FROM Wait",
+      "Wrapped": "SELECT * FROM query(inherit=TRUE, query='''\nLET Wait <= SELECT sleep(time=8) AS Slept FROM scope()\nSELECT * FROM Wait\n''')",
+      "Lazy": "LET Wait = SELECT sleep(time=8) AS Slept FROM scope()\nSELECT * FROM Wait"
+    },
+    "cases": [
+      {
+        "variant": "Materialized",
+        "flow_id": "F.DBH43L1IM3JL4",
+        "schedule_vql": "SELECT collect_client(client_id=\"server\", artifacts=[\"Custom.Review.Timeout.Materialized\"], timeout=3) AS Flow FROM scope()",
+        "wall_seconds": 8.692,
+        "execution_duration_seconds": 8.001077,
+        "stored_request_timeout": 3,
+        "state": "ERROR",
+        "rows": [],
+        "errors": [
+          "Query timed out after 8 seconds"
+        ],
+        "after_deadline_sample": {
+          "elapsed_seconds": 4.184,
+          "state": "RUNNING",
+          "execution_duration": 0
+        }
+      },
+      {
+        "variant": "Wrapped",
+        "flow_id": "F.DBH43N86CG57E",
+        "schedule_vql": "SELECT collect_client(client_id=\"server\", artifacts=[\"Custom.Review.Timeout.Wrapped\"], timeout=3) AS Flow FROM scope()",
+        "wall_seconds": 3.271,
+        "execution_duration_seconds": 3.000307,
+        "stored_request_timeout": 3,
+        "state": "ERROR",
+        "rows": [],
+        "errors": [
+          "Query timed out after 3 seconds"
+        ],
+        "after_deadline_sample": null
+      },
+      {
+        "variant": "Lazy",
+        "flow_id": "F.DBH43O4AT9VVS",
+        "schedule_vql": "SELECT collect_client(client_id=\"server\", artifacts=[\"Custom.Review.Timeout.Lazy\"], timeout=3) AS Flow FROM scope()",
+        "wall_seconds": 3.352,
+        "execution_duration_seconds": 3.000946,
+        "stored_request_timeout": 3,
+        "state": "ERROR",
+        "rows": [],
+        "errors": [
+          "Query timed out after 3 seconds"
+        ],
+        "after_deadline_sample": null
+      },
+      {
+        "variant": "Materialized",
+        "flow_id": "F.DBH43P138JGRQ",
+        "schedule_vql": "SELECT collect_client(client_id=\"server\", artifacts=[\"Custom.Review.Timeout.Materialized\"], timeout=3) AS Flow FROM scope()",
+        "wall_seconds": 8.626,
+        "execution_duration_seconds": 8.001568,
+        "stored_request_timeout": 3,
+        "state": "ERROR",
+        "rows": [
+          {
+            "Slept": true
+          }
+        ],
+        "errors": [
+          "Query timed out after 8 seconds"
+        ],
+        "after_deadline_sample": {
+          "elapsed_seconds": 4.386,
+          "state": "RUNNING",
+          "execution_duration": 0
+        }
+      },
+      {
+        "variant": "Wrapped",
+        "flow_id": "F.DBH43R0EUDMDM",
+        "schedule_vql": "SELECT collect_client(client_id=\"server\", artifacts=[\"Custom.Review.Timeout.Wrapped\"], timeout=3) AS Flow FROM scope()",
+        "wall_seconds": 3.312,
+        "execution_duration_seconds": 3.001045,
+        "stored_request_timeout": 3,
+        "state": "ERROR",
+        "rows": [],
+        "errors": [
+          "Query timed out after 4 seconds"
+        ],
+        "after_deadline_sample": null
+      }
+    ],
+    "download": {
+      "url": "https://github.com/Velocidex/velociraptor/releases/download/v0.77.3/velociraptor-v0.77.3-linux-amd64.gz",
+      "github_asset_sha256": "c2c4eb585f16b622cd57de04995a7a13c076ee455bc2a828fd9243cec2ccfed8",
+      "verified": true
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "artifact_sha256": "18589561f67d61563564c8ac32f1745e5a00cdbef803ac6f8d53b1ea445e219e",
+  "velociraptor_version": "name: velociraptor\nversion: 0.77.2\ncommit: c0c9dd609\nbuild_time: \"2026-08-10T00:58:52Z\"\ncompiler: go1.25.3\nsystem: linux\narchitecture: amd64",
+  "scenario": "Controlled execve substitute; not a demonstrated Hayabusa crash",
+  "injected_exit_code": 7,
+  "partial_timeline_bytes": 0,
+  "observed_kinds": [
+    "Timeline",
+    "Manifest",
+    "Diagnostic",
+    "Status"
+  ],
+  "status": {
+    "Kind": "Status",
+    "Success": false,
+    "EngineSuccess": false,
+    "HasDiagnostics": true,
+    "UploadsComplete": true,
+    "DiagnosticCount": 1,
+    "UploadedDiagnosticCount": 1,
+    "InputCount": 1,
+    "StagedCount": 1,
+    "ReturnCode": 7
+  },
+  "uploaded_files": [
+    "uploads/auto/hayabusa_results.jsonl",
+    "uploads/auto/input_manifest.jsonl",
+    "uploads/auto/diagnostics/errorlog-review.log"
+  ],
+  "all_temporary_workdirs_removed": true,
+  "partial_timeline_uploaded": true,
+  "reproduced": true
+}

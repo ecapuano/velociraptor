@@ -1,65 +1,65 @@
 {
-  "artifact_sha256": "c8ab617c52eb65b2227303bf2ebe7dd827b93002c957b92e092d1f93f9aa7862",
+  "artifact_sha256": "18589561f67d61563564c8ac32f1745e5a00cdbef803ac6f8d53b1ea445e219e",
   "velociraptor_version": "name: velociraptor\nversion: 0.77.2\ncommit: c0c9dd609\nbuild_time: \"2026-08-10T00:58:52Z\"\ncompiler: go1.25.3\nsystem: linux\narchitecture: amd64",
   "monitor_sha256": "38476b2f1a8a4e258aece3b5f99edcfe968bf07a79f93d6658966b6dae80d723",
   "success": {
-    "flow_id": "F.DBH0UHAEBLDN8",
+    "flow_id": "F.DBH4AHDFMCPEE",
     "timeline_rows": 287,
     "detection_rows": 287,
     "uploads": 2
   },
   "duplicate": {
-    "flow_id": "F.DBH0ULNM473PG",
+    "flow_id": "F.DBH4AIM114IVA",
     "timeline_rows": 574,
     "detection_rows": 574,
     "uploads": 2
   },
   "empty_timeline": {
-    "flow_id": "F.DBH0UNH1ITN2M",
+    "flow_id": "F.DBH4AJPUJ4HKA",
     "timeline_rows": 0,
     "detection_rows": 0,
     "uploads": 2
   },
   "default_medium": {
-    "flow_id": "F.DBH0UOGRFBTO4",
+    "flow_id": "F.DBH4AKQK1OQR0",
     "timeline_rows": 5,
     "detection_rows": 5,
     "uploads": 2
   },
   "renamed": {
-    "flow_id": "F.DBH0UPR4SAFE2",
+    "flow_id": "F.DBH4ALO3F4HPC",
     "timeline_rows": 287,
     "detection_rows": 287,
     "uploads": 2
   },
   "missing_file": {
-    "flow_id": "F.DBH0UQQOIGHF6",
+    "flow_id": "F.DBH4AMSJV5VM6",
     "uploads": 0
   },
   "missing_collection": {
-    "flow_id": "F.DBH0UR45KP0A0",
+    "flow_id": "F.DBH4AN6UEP04I",
     "uploads": 0
   },
   "missing_parameters": {
-    "flow_id": "F.DBH0URFDGUAKG",
+    "flow_id": "F.DBH4AN5NMN4H4",
     "uploads": 0
   },
   "invalid_threads": {
-    "flow_id": "F.DBH0UR80DKNNI",
+    "flow_id": "F.DBH4ANCQR6SVC",
     "uploads": 0
   },
   "invalid_level": {
-    "flow_id": "F.DBH0URNC6V51E",
+    "flow_id": "F.DBH4ANDRQGITO",
     "uploads": 0
   },
   "hayabusa_failure": {
-    "flow_id": "F.DBH0URUL2TLTE",
+    "flow_id": "F.DBH4ANHGO475Q",
     "uploads": 1
   },
   "monitor": {
     "analysis_flows": [
-      "F.DBH0UT2CNVU22",
-      "F.DBH0UU4A9FOF8"
+      "F.DBH4AOPCBIQAE",
+      "F.DBH4APV387PT2"
     ],
     "detection_rows": 10,
     "serialized": true,
@@ -88,7 +88,7 @@
   ],
   "extended": {
     "exit_zero_without_output": {
-      "flow_id": "F.DBH0UV8EN7M6S",
+      "flow_id": "F.DBH4AR4TFJMII",
       "status": [
         {
           "Kind": "Status",
@@ -111,19 +111,88 @@
       ]
     },
     "timeout": {
-      "flow_id": "F.DBH0UVRV6IM72",
+      "flow_id": "F.DBH4AROF7I89I",
       "status": [],
       "uploads": 0,
       "errors": [
         "Query timed out after 3 seconds\n"
       ]
     },
+    "partial_nonzero_diagnostic": {
+      "flow_id": "F.DBH4ASPIDRKBS",
+      "status": [
+        {
+          "Kind": "Status",
+          "ClientId": "C.123456",
+          "FlowId": "F.Success",
+          "Success": false,
+          "EngineSuccess": false,
+          "HasDiagnostics": true,
+          "UploadsComplete": true,
+          "DiagnosticCount": 1,
+          "UploadedDiagnosticCount": 1,
+          "InputCount": 1,
+          "StagedCount": 1,
+          "ReturnCode": 7
+        }
+      ],
+      "raw_timeline_bytes": 33,
+      "byte_exact": true,
+      "detection_rows": 0,
+      "diagnostic_retained": true
+    },
+    "partial_nonzero": {
+      "flow_id": "F.DBH4ATNJAG5VM",
+      "status": [
+        {
+          "Kind": "Status",
+          "ClientId": "C.123456",
+          "FlowId": "F.Success",
+          "Success": false,
+          "EngineSuccess": false,
+          "HasDiagnostics": false,
+          "UploadsComplete": true,
+          "DiagnosticCount": 0,
+          "UploadedDiagnosticCount": 0,
+          "InputCount": 1,
+          "StagedCount": 1,
+          "ReturnCode": 7
+        }
+      ],
+      "raw_timeline_bytes": 33,
+      "byte_exact": true,
+      "detection_rows": 0,
+      "diagnostic_retained": false
+    },
+    "truncated_nonzero": {
+      "flow_id": "F.DBH4AUEDNASOK",
+      "status": [
+        {
+          "Kind": "Status",
+          "ClientId": "C.123456",
+          "FlowId": "F.Success",
+          "Success": false,
+          "EngineSuccess": false,
+          "HasDiagnostics": false,
+          "UploadsComplete": true,
+          "DiagnosticCount": 0,
+          "UploadedDiagnosticCount": 0,
+          "InputCount": 1,
+          "StagedCount": 1,
+          "ReturnCode": 7
+        }
+      ],
+      "raw_timeline_bytes": 25,
+      "byte_exact": true,
+      "detection_rows": 0,
+      "diagnostic_retained": false
+    },
     "explicit_cancellation": {
-      "flow_id": "F.DBH0V0U61ONCI",
+      "flow_id": "F.DBH4AUS68D5GE",
       "external_process_stopped": true
     },
     "corrupt_input": {
-      "flow_id": "F.DBH0V12LK5NTG",
+      "flow_id": "F.DBH4AVE9BCPGK",
       "status": [
         {
           "Kind": "Status",
@@ -145,7 +214,7 @@
       "potential_false_success": false
     },
     "mixed_corrupt_input": {
-      "flow_id": "F.DBH0V24SPCP0K",
+      "flow_id": "F.DBH4B0RUS2L6U",
       "status": [
         {
           "Kind": "Status",
@@ -166,7 +235,7 @@
       "uploads": 3
     },
     "row_limit": {
-      "flow_id": "F.DBH0V39LU72N0",
+      "flow_id": "F.DBH4B23QUA1IU",
       "state": "ERROR",
       "status": [],
       "rows": 4,
@@ -174,7 +243,7 @@
       "errors": []
     },
     "upload_limit": {
-      "flow_id": "F.DBH0V4BPRPMT0",
+      "flow_id": "F.DBH4B3N1E5MAO",
       "state": "ERROR",
       "status": [],
       "rows": 0,
@@ -182,16 +251,16 @@
       "errors": []
     },
     "installed_monitor_real_linux_client": {
-      "client_id": "C.28e94914ce0a5209",
-      "source_flow": "F.DBH0V6L4PMHQS",
-      "analysis_flow": "F.DBH0V6P08H4GM",
+      "client_id": "C.7dea64062038be38",
+      "source_flow": "F.DBH4B62GQ3PKS",
+      "analysis_flow": "F.DBH4B6FP25HGS",
       "upload_count": 2,
       "detection_rows": 10,
       "status": [
         {
           "Kind": "Status",
-          "ClientId": "C.28e94914ce0a5209",
-          "FlowId": "F.DBH0V6L4PMHQS",
+          "ClientId": "C.7dea64062038be38",
+          "FlowId": "F.DBH4B62GQ3PKS",
           "Success": true,
           "EngineSuccess": true,
           "HasDiagnostics": false,
@@ -201,24 +270,24 @@
           "InputCount": 2,
           "StagedCount": 2,
           "ReturnCode": 0,
-          "AnalysisFlowId": "F.DBH0V6P08H4GM",
+          "AnalysisFlowId": "F.DBH4B6FP25HGS",
           "_Source": "VelociraptorServer",
-          "_ts": 1793200031773
+          "_ts": 1793213855047
         }
       ]
     },
     "installed_monitor_timeout": {
-      "source_flow": "F.DBH0V960O1DP0",
+      "source_flow": "F.DBH4B8TTB852I",
       "status": [
         {
           "Kind": "AnalysisStatus",
-          "ClientId": "C.28e94914ce0a5209",
-          "FlowId": "F.DBH0V960O1DP0",
-          "AnalysisFlowId": "F.DBH0V931GRL2M",
+          "ClientId": "C.7dea64062038be38",
+          "FlowId": "F.DBH4B8TTB852I",
+          "AnalysisFlowId": "F.DBH4B94LAI17C",
           "State": "ERROR",
           "Message": "Query timed out after 3 seconds\n",
           "_Source": "VelociraptorServer",
-          "_ts": 1793200040790
+          "_ts": 1793213864054
         }
       ],
       "external_process_stopped": true
@@ -228,8 +297,8 @@
       "analysis_rows": 2,
       "serialized": true,
       "source_flows": [
-        "F.DBH0VB3BA96NC",
-        "F.DBH0VB54PPMVM"
+        "F.DBH4BAPSV259I",
+        "F.DBH4BB63QC7A6"
       ]
     }
   }

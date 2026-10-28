@@ -1,0 +1,424 @@
+{
+  "version": "name: velociraptor\nversion: 0.77.3\ncommit: 7d287b0b9\nbuild_time: \"2026-10-04T10:04:24Z\"\ncompiler: go1.27.1\nsystem: linux\narchitecture: amd64",
+  "artifact_sha256": "c8ab617c52eb65b2227303bf2ebe7dd827b93002c957b92e092d1f93f9aa7862",
+  "monitor_sha256": "38476b2f1a8a4e258aece3b5f99edcfe968bf07a79f93d6658966b6dae80d723",
+  "complete_baseline_and_extended_suite_passed": false,
+  "analyzer_baseline": {
+    "result": "All analyzer assertions passed before synthetic monitor setup failed",
+    "cases": [
+      {
+        "flow_id": "F.DBH44A66Q1N1E",
+        "artifact": [
+          "Server.Analysis.Windows.EventLogs.HayabusaEngine"
+        ],
+        "parameters": {
+          "ClientId": "C.123456",
+          "FlowId": "F.Success",
+          "MinimumLevel": "informational"
+        },
+        "state": "FINISHED",
+        "collected_rows": 290,
+        "timeline_rows": 287
+      },
+      {
+        "flow_id": "F.DBH44AQEG5GH0",
+        "artifact": [
+          "Server.Analysis.Windows.EventLogs.HayabusaEngine"
+        ],
+        "parameters": {
+          "ClientId": "C.123456",
+          "FlowId": "F.Duplicate",
+          "MinimumLevel": "informational"
+        },
+        "state": "FINISHED",
+        "collected_rows": 577,
+        "timeline_rows": 574
+      },
+      {
+        "flow_id": "F.DBH44C5AF4SKE",
+        "artifact": [
+          "Server.Analysis.Windows.EventLogs.HayabusaEngine"
+        ],
+        "parameters": {
+          "ClientId": "C.123456",
+          "FlowId": "F.EmptyTimeline",
+          "MinimumLevel": "informational"
+        },
+        "state": "FINISHED",
+        "collected_rows": 3,
+        "timeline_rows": 0
+      },
+      {
+        "flow_id": "F.DBH44CRG74G8M",
+        "artifact": [
+          "Server.Analysis.Windows.EventLogs.HayabusaEngine"
+        ],
+        "parameters": {
+          "ClientId": "C.123456",
+          "FlowId": "F.Medium",
+          "MinimumLevel": "medium"
+        },
+        "state": "FINISHED",
+        "collected_rows": 8,
+        "timeline_rows": 5
+      },
+      {
+        "flow_id": "F.DBH44DRBHTERC",
+        "artifact": [
+          "Server.Analysis.Windows.EventLogs.HayabusaEngine"
+        ],
+        "parameters": {
+          "ClientId": "C.123456",
+          "FlowId": "F.Renamed",
+          "EvtxRegex": "(?i)\\.log$",
+          "MinimumLevel": "informational"
+        },
+        "state": "FINISHED",
+        "collected_rows": 290,
+        "timeline_rows": 287
+      },
+      {
+        "flow_id": "F.DBH44F25DHFK2",
+        "artifact": [
+          "Server.Analysis.Windows.EventLogs.HayabusaEngine"
+        ],
+        "parameters": {
+          "ClientId": "C.123456",
+          "FlowId": "F.Missing",
+          "MinimumLevel": "informational"
+        },
+        "state": "ERROR",
+        "collected_rows": 1,
+        "timeline_rows": null
+      },
+      {
+        "flow_id": "F.DBH44FDAC6L44",
+        "artifact": [
+          "Server.Analysis.Windows.EventLogs.HayabusaEngine"
+        ],
+        "parameters": {
+          "ClientId": "C.123456",
+          "FlowId": "F.DoesNotExist",
+          "MinimumLevel": "informational"
+        },
+        "state": "ERROR",
+        "collected_rows": 1,
+        "timeline_rows": null
+      },
+      {
+        "flow_id": "F.DBH44FG79L236",
+        "artifact": [
+          "Server.Analysis.Windows.EventLogs.HayabusaEngine"
+        ],
+        "parameters": {
+          "ClientId": "C.123456",
+          "FlowId": "F.Success",
+          "MinimumLevel": "informational",
+          "Threads": "0"
+        },
+        "state": "ERROR",
+        "collected_rows": 1,
+        "timeline_rows": null
+      },
+      {
+        "flow_id": "F.DBH44FMDPSA0E",
+        "artifact": [
+          "Server.Analysis.Windows.EventLogs.HayabusaEngine"
+        ],
+        "parameters": {},
+        "state": "ERROR",
+        "collected_rows": 1,
+        "timeline_rows": null
+      },
+      {
+        "flow_id": "F.DBH44FVQ14KAA",
+        "artifact": [
+          "Server.Analysis.Windows.EventLogs.HayabusaEngine"
+        ],
+        "parameters": {
+          "ClientId": "C.123456",
+          "FlowId": "F.Success",
+          "MinimumLevel": "invalid"
+        },
+        "state": "ERROR",
+        "collected_rows": 1,
+        "timeline_rows": null
+      },
+      {
+        "flow_id": "F.DBH44G5OQ1G4C",
+        "artifact": [
+          "Custom.Test.hayabusa_failure"
+        ],
+        "parameters": {
+          "ClientId": "C.123456",
+          "FlowId": "F.Success",
+          "MinimumLevel": "informational"
+        },
+        "state": "ERROR",
+        "collected_rows": 2,
+        "timeline_rows": null
+      }
+    ]
+  },
+  "synthetic_monitor_setup": {
+    "result": "Harness setup rejected; no artifact failure established",
+    "error": "send_event: Client ID invalid to write to a CLIENT artifact_type: ClientId is not valid",
+    "call": "send_event(artifact=\"System.Flow.Completion\", client_id=\"server\", row=...)"
+  },
+  "extended_preflight_completed": {
+    "exit_zero_without_output": {
+      "flow_id": "F.DBH44UK0IKOA8",
+      "status": [
+        {
+          "Kind": "Status",
+          "ClientId": "C.123456",
+          "FlowId": "F.Success",
+          "Success": false,
+          "EngineSuccess": false,
+          "HasDiagnostics": false,
+          "UploadsComplete": false,
+          "DiagnosticCount": 0,
+          "UploadedDiagnosticCount": 0,
+          "InputCount": 1,
+          "StagedCount": 1,
+          "ReturnCode": 0
+        }
+      ],
+      "uploads": 1,
+      "errors": [
+        "Hayabusa exited successfully but its timeline is missing.\n"
+      ]
+    },
+    "timeout": {
+      "flow_id": "F.DBH44V8D4ONQS",
+      "status": [],
+      "uploads": 0,
+      "errors": [
+        "Query timed out after 3 seconds\n"
+      ]
+    },
+    "explicit_cancellation": {
+      "flow_id": "F.DBH450LQANRS6",
+      "external_process_stopped": true
+    },
+    "corrupt_input": {
+      "flow_id": "F.DBH4512EEJHKS",
+      "status": [
+        {
+          "Kind": "Status",
+          "ClientId": "C.123456",
+          "FlowId": "F.Corrupt",
+          "Success": false,
+          "EngineSuccess": true,
+          "HasDiagnostics": true,
+          "UploadsComplete": true,
+          "DiagnosticCount": 1,
+          "UploadedDiagnosticCount": 1,
+          "InputCount": 1,
+          "StagedCount": 1,
+          "ReturnCode": 0
+        }
+      ],
+      "uploads": 3,
+      "errors": [],
+      "potential_false_success": false
+    },
+    "mixed_corrupt_input": {
+      "flow_id": "F.DBH452IMC48HI",
+      "status": [
+        {
+          "Kind": "Status",
+          "ClientId": "C.123456",
+          "FlowId": "F.MixedCorrupt",
+          "Success": false,
+          "EngineSuccess": true,
+          "HasDiagnostics": true,
+          "UploadsComplete": true,
+          "DiagnosticCount": 1,
+          "UploadedDiagnosticCount": 1,
+          "InputCount": 2,
+          "StagedCount": 2,
+          "ReturnCode": 0
+        }
+      ],
+      "detection_rows": 287,
+      "uploads": 3
+    }
+  },
+  "initial_row_limit_check": {
+    "result": "Immediate directory absence assertion failed; frontend then terminated by harness finally block",
+    "flow_id": "F.DBH45418P37MS",
+    "total_requests": 1,
+    "query_stats_count": 1,
+    "execution_duration_microseconds": 4611792,
+    "limitation": "Residual files after forced frontend termination do not prove a naturally persistent cleanup failure."
+  },
+  "real_client_installed_monitor": {
+    "installed_monitor_real_linux_client": {
+      "client_id": "C.10b05489b1217ab3",
+      "source_flow": "F.DBH45VL13LOTE",
+      "analysis_flow": "F.DBH45VUV9DO04",
+      "upload_count": 2,
+      "detection_rows": 10,
+      "status": [
+        {
+          "Kind": "Status",
+          "ClientId": "C.10b05489b1217ab3",
+          "FlowId": "F.DBH45VL13LOTE",
+          "Success": true,
+          "EngineSuccess": true,
+          "HasDiagnostics": false,
+          "UploadsComplete": true,
+          "DiagnosticCount": 0,
+          "UploadedDiagnosticCount": 0,
+          "InputCount": 2,
+          "StagedCount": 2,
+          "ReturnCode": 0,
+          "AnalysisFlowId": "F.DBH45VUV9DO04",
+          "_Writer": "VelociraptorServer",
+          "_Source": "VelociraptorServer",
+          "_ts": 1793213189388
+        }
+      ]
+    },
+    "installed_monitor_timeout": {
+      "source_flow": "F.DBH462A6GI5PS",
+      "status": [
+        {
+          "Kind": "AnalysisStatus",
+          "ClientId": "C.10b05489b1217ab3",
+          "FlowId": "F.DBH462A6GI5PS",
+          "AnalysisFlowId": "F.DBH462K0CKF8M",
+          "State": "ERROR",
+          "Message": "Query timed out after 3 seconds\n",
+          "_Writer": "VelociraptorServer",
+          "_Source": "VelociraptorServer",
+          "_ts": 1793213198067
+        }
+      ],
+      "external_process_stopped": true
+    },
+    "early_error_monitor": {
+      "status_rows": 2,
+      "analysis_rows": 2,
+      "serialized": true,
+      "source_flows": [
+        "F.DBH464LRQSRD4",
+        "F.DBH464K791JRQ"
+      ]
+    }
+  },
+  "bounded_row_limit_cleanup": {
+    "row_limit_cleanup": [
+      {
+        "iteration": 1,
+        "flow_id": "F.DBH472M8ST5V0",
+        "state": "ERROR",
+        "execution_duration": 4697626,
+        "total_requests": 1,
+        "query_stats": [
+          {
+            "status": "GENERIC_ERROR",
+            "error_message": "Row limit exceeded",
+            "backtrace": "",
+            "duration": 4697626,
+            "last_active": 1793213326983224,
+            "first_active": 1793213322285612,
+            "names_with_response": [
+              "Server.Analysis.Windows.EventLogs.HayabusaEngine/Results"
+            ],
+            "Artifact": "Server.Analysis.Windows.EventLogs.HayabusaEngine",
+            "log_rows": 18,
+            "uploaded_files": 2,
+            "uploaded_bytes": 206265,
+            "expected_uploaded_bytes": 206265,
+            "result_rows": 4,
+            "query_id": 0,
+            "total_queries": 0,
+            "transactions_outstanding": 0
+          }
+        ],
+        "observations": [
+          {
+            "seconds_after_duration_observed": 0.0004,
+            "existing_directories": []
+          }
+        ],
+        "cleanup_complete": true
+      },
+      {
+        "iteration": 2,
+        "flow_id": "F.DBH473VVT615Q",
+        "state": "ERROR",
+        "execution_duration": 4814951,
+        "total_requests": 1,
+        "query_stats": [
+          {
+            "status": "GENERIC_ERROR",
+            "error_message": "Row limit exceeded",
+            "backtrace": "",
+            "duration": 4814951,
+            "last_active": 1793213332128289,
+            "first_active": 1793213327313369,
+            "names_with_response": [
+              "Server.Analysis.Windows.EventLogs.HayabusaEngine/Results"
+            ],
+            "Artifact": "Server.Analysis.Windows.EventLogs.HayabusaEngine",
+            "log_rows": 18,
+            "uploaded_files": 2,
+            "uploaded_bytes": 206265,
+            "expected_uploaded_bytes": 206265,
+            "result_rows": 4,
+            "query_id": 0,
+            "total_queries": 0,
+            "transactions_outstanding": 0
+          }
+        ],
+        "observations": [
+          {
+            "seconds_after_duration_observed": 0.0003,
+            "existing_directories": []
+          }
+        ],
+        "cleanup_complete": true
+      },
+      {
+        "iteration": 3,
+        "flow_id": "F.DBH4754ONOQAS",
+        "state": "ERROR",
+        "execution_duration": 4517001,
+        "total_requests": 1,
+        "query_stats": [
+          {
+            "status": "GENERIC_ERROR",
+            "error_message": "Row limit exceeded",
+            "backtrace": "",
+            "duration": 4517001,
+            "last_active": 1793213336985767,
+            "first_active": 1793213332468798,
+            "names_with_response": [
+              "Server.Analysis.Windows.EventLogs.HayabusaEngine/Results"
+            ],
+            "Artifact": "Server.Analysis.Windows.EventLogs.HayabusaEngine",
+            "log_rows": 18,
+            "uploaded_files": 2,
+            "uploaded_bytes": 206265,
+            "expected_uploaded_bytes": 206265,
+            "result_rows": 4,
+            "query_id": 0,
+            "total_queries": 0,
+            "transactions_outstanding": 0
+          }
+        ],
+        "observations": [
+          {
+            "seconds_after_duration_observed": 0.0003,
+            "existing_directories": []
+          }
+        ],
+        "cleanup_complete": true
+      }
+    ]
+  },
+  "interpretation": "Verified analyzer baseline, partial lifecycle cases, three real-client installed-monitor cases, and three bounded cleanup repetitions on 0.77.3. Original full suite did not pass due synthetic publisher rejection and an immediate-cleanup assertion. No persistent cleanup failure reproduced while leaving frontend alive."
+}

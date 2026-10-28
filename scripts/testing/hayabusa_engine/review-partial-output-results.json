@@ -1,0 +1,33 @@
+{
+  "artifact_sha256": "c8ab617c52eb65b2227303bf2ebe7dd827b93002c957b92e092d1f93f9aa7862",
+  "velociraptor_version": "name: velociraptor\nversion: 0.77.2\ncommit: c0c9dd609\nbuild_time: \"2026-08-10T00:58:52Z\"\ncompiler: go1.25.3\nsystem: linux\narchitecture: amd64",
+  "scenario": "Controlled execve substitute writes valid JSONL and diagnostic file, asserts timeline is nonempty, then exits 7; not a demonstrated Hayabusa crash",
+  "injected_exit_code": 7,
+  "partial_timeline_bytes": 75,
+  "observed_kinds": [
+    "Manifest",
+    "Diagnostic",
+    "Status"
+  ],
+  "status": {
+    "Kind": "Status",
+    "Success": false,
+    "EngineSuccess": false,
+    "HasDiagnostics": true,
+    "UploadsComplete": false,
+    "DiagnosticCount": 1,
+    "UploadedDiagnosticCount": 1,
+    "InputCount": 1,
+    "StagedCount": 1,
+    "ReturnCode": 7
+  },
+  "uploaded_files": [
+    "uploads/auto/input_manifest.jsonl",
+    "uploads/auto/diagnostics/errorlog-review.log"
+  ],
+  "all_temporary_workdirs_removed": true,
+  "partial_timeline_uploaded": false,
+  "reproduced": true,
+  "conclusion": "Nonzero exit correctly reports failure, but an existing partial timeline is not preserved. Description should distinguish zero-exit partial input parsing from nonzero process failures, or retention should be expanded.",
+  "script": "review_partial_output.py"
+}

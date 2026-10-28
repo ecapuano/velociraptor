@@ -99,6 +99,15 @@ def main():
     def rows_for(flow, artifact=NAME):
         return query(f'SELECT * FROM source(client_id="server", flow_id={json.dumps(flow)}, artifact={json.dumps(artifact + "/Results")})')
 
+    def await_cleanup(messages):
+        # Nested query scopes may still be closing after the outer flow ends.
+        # Keep the frontend alive while checking actual filesystem cleanup.
+        directories = set(re.findall(r'remov(?:ing|ed) tempdir (\S+)', messages))
+        deadline = time.monotonic() + 10
+        while any(Path(path).exists() for path in directories) and time.monotonic() < deadline:
+            time.sleep(.1)
+        assert all(not Path(path).exists() for path in directories), sorted(directories)
+
     def collect(source, artifact=NAME, parameters=True, overrides=None, limits=None):
         values = dict(ClientId='C.123456', FlowId=source, MinimumLevel='informational') if parameters else {}
         values.update(overrides or {})
@@ -108,17 +117,14 @@ def main():
         deadline = time.time() + 180
         while time.time() < deadline:
             states = query(f'SELECT get_flow(client_id="server", flow_id={json.dumps(flow)}) AS Flow FROM scope()')
-            if states and states[0]['Flow']['state'] in ('FINISHED', 'ERROR') and states[0]['Flow'].get('execution_duration', 0) > 0:
+            if states and states[0].get('Flow') and states[0]['Flow']['state'] in ('FINISHED', 'ERROR') and states[0]['Flow'].get('execution_duration', 0) > 0:
                 break
             time.sleep(0.5)
         else:
             raise RuntimeError(f'Flow timeout: {flow}')
         logs = [json.loads(line) for line in (base / 'logs.json').read_text().splitlines() if line.strip()]
         messages = '\n'.join(row['message'] for row in logs)
-        for directory in re.findall(r'removing tempdir (\S+)', messages):
-            assert not Path(directory).exists(), directory
-        for directory in re.findall(r'removed tempdir (\S+)', messages):
-            assert not Path(directory).exists(), directory
+        await_cleanup(messages)
         files = [file for file in (base / 'uploads').rglob('*') if file.is_file()]
         return flow, base, logs, messages, files
 
@@ -206,6 +212,8 @@ def main():
                     f'SELECT * FROM Artifact.{monitor_name}() LIMIT 14'], env=env, stdout=output, stderr=errors)
                 try:
                     time.sleep(2)
+                    # System.Flow.Completion is a CLIENT_EVENT: use a valid client
+                    # carrier even when testing a server-valued row payload.
                     # Nonmatching artifact and server completions must not schedule work.
                     for client, source, artifacts in [
                         ('C.123456', 'F.Ignored', ['Unrelated.Artifact']),
@@ -213,7 +221,7 @@ def main():
                         ('C.123456', 'F.MonitorA', ['Windows.KapeFiles.Targets']),
                         ('C.123456', 'F.MonitorB', ['Windows.Triage.Targets']),
                     ]:
-                        sent = query('SELECT send_event(artifact="System.Flow.Completion", client_id="server", row=dict('
+                        sent = query('SELECT send_event(artifact="System.Flow.Completion", client_id="C.123456", row=dict('
                               f'ClientId={json.dumps(client)}, FlowId={json.dumps(source)}, '
                               f'Flow=dict(artifacts_with_results={json.dumps(artifacts)}))) AS Sent FROM scope()')
                         assert sent[0]['Sent'] is not None, sent
@@ -222,7 +230,11 @@ def main():
                 finally:
                     if watcher.poll() is None:
                         watcher.terminate()
-                        watcher.wait(timeout=10)
+                        try:
+                            watcher.wait(timeout=10)
+                        except subprocess.TimeoutExpired:
+                            watcher.kill()
+                            watcher.wait(timeout=5)
                     output.close()
                     errors.close()
                 forwarded = [json.loads(line) for line in (work/'monitor.jsonl').read_text().splitlines() if line.strip()]
@@ -240,8 +252,7 @@ def main():
                     base = work/'filestore/clients/server/collections'/status['AnalysisFlowId']
                     logs = [json.loads(line) for line in (base/'logs.json').read_text().splitlines()]
                     assert not any(row['Level'] == 'ERROR' for row in logs), logs
-                    for directory in re.findall(r'remov(?:ing|ed) tempdir (\S+)', '\n'.join(row['message'] for row in logs)):
-                        assert not Path(directory).exists(), directory
+                    await_cleanup('\n'.join(row['message'] for row in logs))
                     flow_logs.append(logs)
                 assert max(row['Timestamp'] for row in flow_logs[0]) <= min(row['Timestamp'] for row in flow_logs[1]), 'Monitor analyses overlapped'
                 report['monitor'] = dict(analysis_flows=sorted(created), detection_rows=len(detections), serialized=True, ignored_nonmatching_and_server_events=True)

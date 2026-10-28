@@ -1,0 +1,220 @@
+[
+  {
+    "binary_sha256": "6c4c23c466d892788ff56ddcd3a31f844e4c0d797ade454c5e2625eb9e427077",
+    "version": "name: velociraptor\nversion: 0.77.2\ncommit: c0c9dd609\nbuild_time: \"2026-08-10T00:58:52Z\"\ncompiler: go1.25.3\nsystem: linux\narchitecture: amd64\n",
+    "cases": [
+      {
+        "rows": 0,
+        "materialize_limit": 1000,
+        "failed_row": -1,
+        "query": "LET VQL_MATERIALIZE_ROW_LIMIT <= 1000\nLET Staged <= SELECT if(condition=_value != -1, then=\"good.evtx\") AS LocalPath FROM range(end=0)\nLET Stats <= SELECT count() AS Total, sum(item=if(condition=LocalPath, then=1, else=0)) AS Successful FROM Staged GROUP BY 1\nSELECT len(list=Staged) AS Len, Stats,\n  Stats.Total[0] > 0 AND Stats.Total[0] = Stats.Successful[0] AS Ready FROM scope()\n",
+        "result": [
+          {
+            "Len": 0,
+            "Stats": [],
+            "Ready": false
+          }
+        ]
+      },
+      {
+        "rows": 1000,
+        "materialize_limit": 1000,
+        "failed_row": -1,
+        "query": "LET VQL_MATERIALIZE_ROW_LIMIT <= 1000\nLET Staged <= SELECT if(condition=_value != -1, then=\"good.evtx\") AS LocalPath FROM range(end=1000)\nLET Stats <= SELECT count() AS Total, sum(item=if(condition=LocalPath, then=1, else=0)) AS Successful FROM Staged GROUP BY 1\nSELECT len(list=Staged) AS Len, Stats,\n  Stats.Total[0] > 0 AND Stats.Total[0] = Stats.Successful[0] AS Ready FROM scope()\n",
+        "result": [
+          {
+            "Len": 1000,
+            "Stats": [
+              {
+                "Total": 1000,
+                "Successful": 1000
+              }
+            ],
+            "Ready": true
+          }
+        ]
+      },
+      {
+        "rows": 1001,
+        "materialize_limit": 1000,
+        "failed_row": -1,
+        "query": "LET VQL_MATERIALIZE_ROW_LIMIT <= 1000\nLET Staged <= SELECT if(condition=_value != -1, then=\"good.evtx\") AS LocalPath FROM range(end=1001)\nLET Stats <= SELECT count() AS Total, sum(item=if(condition=LocalPath, then=1, else=0)) AS Successful FROM Staged GROUP BY 1\nSELECT len(list=Staged) AS Len, Stats,\n  Stats.Total[0] > 0 AND Stats.Total[0] = Stats.Successful[0] AS Ready FROM scope()\n",
+        "result": [
+          {
+            "Len": 0,
+            "Stats": [
+              {
+                "Total": 1001,
+                "Successful": 1001
+              }
+            ],
+            "Ready": true
+          }
+        ]
+      },
+      {
+        "rows": 1500,
+        "materialize_limit": 1000,
+        "failed_row": -1,
+        "query": "LET VQL_MATERIALIZE_ROW_LIMIT <= 1000\nLET Staged <= SELECT if(condition=_value != -1, then=\"good.evtx\") AS LocalPath FROM range(end=1500)\nLET Stats <= SELECT count() AS Total, sum(item=if(condition=LocalPath, then=1, else=0)) AS Successful FROM Staged GROUP BY 1\nSELECT len(list=Staged) AS Len, Stats,\n  Stats.Total[0] > 0 AND Stats.Total[0] = Stats.Successful[0] AS Ready FROM scope()\n",
+        "result": [
+          {
+            "Len": 0,
+            "Stats": [
+              {
+                "Total": 1500,
+                "Successful": 1500
+              }
+            ],
+            "Ready": true
+          }
+        ]
+      },
+      {
+        "rows": 1500,
+        "materialize_limit": 2000,
+        "failed_row": -1,
+        "query": "LET VQL_MATERIALIZE_ROW_LIMIT <= 2000\nLET Staged <= SELECT if(condition=_value != -1, then=\"good.evtx\") AS LocalPath FROM range(end=1500)\nLET Stats <= SELECT count() AS Total, sum(item=if(condition=LocalPath, then=1, else=0)) AS Successful FROM Staged GROUP BY 1\nSELECT len(list=Staged) AS Len, Stats,\n  Stats.Total[0] > 0 AND Stats.Total[0] = Stats.Successful[0] AS Ready FROM scope()\n",
+        "result": [
+          {
+            "Len": 1500,
+            "Stats": [
+              {
+                "Total": 1500,
+                "Successful": 1500
+              }
+            ],
+            "Ready": true
+          }
+        ]
+      },
+      {
+        "rows": 1500,
+        "materialize_limit": 1000,
+        "failed_row": 1200,
+        "query": "LET VQL_MATERIALIZE_ROW_LIMIT <= 1000\nLET Staged <= SELECT if(condition=_value != 1200, then=\"good.evtx\") AS LocalPath FROM range(end=1500)\nLET Stats <= SELECT count() AS Total, sum(item=if(condition=LocalPath, then=1, else=0)) AS Successful FROM Staged GROUP BY 1\nSELECT len(list=Staged) AS Len, Stats,\n  Stats.Total[0] > 0 AND Stats.Total[0] = Stats.Successful[0] AS Ready FROM scope()\n",
+        "result": [
+          {
+            "Len": 0,
+            "Stats": [
+              {
+                "Total": 1500,
+                "Successful": 1499
+              }
+            ],
+            "Ready": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "binary_sha256": "c216b7be6f104da551c302d707a7e5a7126e97db33d3f1fc9d2c3b76cfa00093",
+    "version": "name: velociraptor\nversion: 0.77.3\ncommit: 7d287b0b9\nbuild_time: \"2026-10-04T10:04:24Z\"\ncompiler: go1.27.1\nsystem: linux\narchitecture: amd64\n",
+    "cases": [
+      {
+        "rows": 0,
+        "materialize_limit": 1000,
+        "failed_row": -1,
+        "query": "LET VQL_MATERIALIZE_ROW_LIMIT <= 1000\nLET Staged <= SELECT if(condition=_value != -1, then=\"good.evtx\") AS LocalPath FROM range(end=0)\nLET Stats <= SELECT count() AS Total, sum(item=if(condition=LocalPath, then=1, else=0)) AS Successful FROM Staged GROUP BY 1\nSELECT len(list=Staged) AS Len, Stats,\n  Stats.Total[0] > 0 AND Stats.Total[0] = Stats.Successful[0] AS Ready FROM scope()\n",
+        "result": [
+          {
+            "Len": 0,
+            "Stats": [],
+            "Ready": false
+          }
+        ]
+      },
+      {
+        "rows": 1000,
+        "materialize_limit": 1000,
+        "failed_row": -1,
+        "query": "LET VQL_MATERIALIZE_ROW_LIMIT <= 1000\nLET Staged <= SELECT if(condition=_value != -1, then=\"good.evtx\") AS LocalPath FROM range(end=1000)\nLET Stats <= SELECT count() AS Total, sum(item=if(condition=LocalPath, then=1, else=0)) AS Successful FROM Staged GROUP BY 1\nSELECT len(list=Staged) AS Len, Stats,\n  Stats.Total[0] > 0 AND Stats.Total[0] = Stats.Successful[0] AS Ready FROM scope()\n",
+        "result": [
+          {
+            "Len": 1000,
+            "Stats": [
+              {
+                "Total": 1000,
+                "Successful": 1000
+              }
+            ],
+            "Ready": true
+          }
+        ]
+      },
+      {
+        "rows": 1001,
+        "materialize_limit": 1000,
+        "failed_row": -1,
+        "query": "LET VQL_MATERIALIZE_ROW_LIMIT <= 1000\nLET Staged <= SELECT if(condition=_value != -1, then=\"good.evtx\") AS LocalPath FROM range(end=1001)\nLET Stats <= SELECT count() AS Total, sum(item=if(condition=LocalPath, then=1, else=0)) AS Successful FROM Staged GROUP BY 1\nSELECT len(list=Staged) AS Len, Stats,\n  Stats.Total[0] > 0 AND Stats.Total[0] = Stats.Successful[0] AS Ready FROM scope()\n",
+        "result": [
+          {
+            "Len": 0,
+            "Stats": [
+              {
+                "Total": 1001,
+                "Successful": 1001
+              }
+            ],
+            "Ready": true
+          }
+        ]
+      },
+      {
+        "rows": 1500,
+        "materialize_limit": 1000,
+        "failed_row": -1,
+        "query": "LET VQL_MATERIALIZE_ROW_LIMIT <= 1000\nLET Staged <= SELECT if(condition=_value != -1, then=\"good.evtx\") AS LocalPath FROM range(end=1500)\nLET Stats <= SELECT count() AS Total, sum(item=if(condition=LocalPath, then=1, else=0)) AS Successful FROM Staged GROUP BY 1\nSELECT len(list=Staged) AS Len, Stats,\n  Stats.Total[0] > 0 AND Stats.Total[0] = Stats.Successful[0] AS Ready FROM scope()\n",
+        "result": [
+          {
+            "Len": 0,
+            "Stats": [
+              {
+                "Total": 1500,
+                "Successful": 1500
+              }
+            ],
+            "Ready": true
+          }
+        ]
+      },
+      {
+        "rows": 1500,
+        "materialize_limit": 2000,
+        "failed_row": -1,
+        "query": "LET VQL_MATERIALIZE_ROW_LIMIT <= 2000\nLET Staged <= SELECT if(condition=_value != -1, then=\"good.evtx\") AS LocalPath FROM range(end=1500)\nLET Stats <= SELECT count() AS Total, sum(item=if(condition=LocalPath, then=1, else=0)) AS Successful FROM Staged GROUP BY 1\nSELECT len(list=Staged) AS Len, Stats,\n  Stats.Total[0] > 0 AND Stats.Total[0] = Stats.Successful[0] AS Ready FROM scope()\n",
+        "result": [
+          {
+            "Len": 1500,
+            "Stats": [
+              {
+                "Total": 1500,
+                "Successful": 1500
+              }
+            ],
+            "Ready": true
+          }
+        ]
+      },
+      {
+        "rows": 1500,
+        "materialize_limit": 1000,
+        "failed_row": 1200,
+        "query": "LET VQL_MATERIALIZE_ROW_LIMIT <= 1000\nLET Staged <= SELECT if(condition=_value != 1200, then=\"good.evtx\") AS LocalPath FROM range(end=1500)\nLET Stats <= SELECT count() AS Total, sum(item=if(condition=LocalPath, then=1, else=0)) AS Successful FROM Staged GROUP BY 1\nSELECT len(list=Staged) AS Len, Stats,\n  Stats.Total[0] > 0 AND Stats.Total[0] = Stats.Successful[0] AS Ready FROM scope()\n",
+        "result": [
+          {
+            "Len": 0,
+            "Stats": [
+              {
+                "Total": 1500,
+                "Successful": 1499
+              }
+            ],
+            "Ready": false
+          }
+        ]
+      }
+    ]
+  }
+]
