@@ -10,14 +10,17 @@ python3 scripts/testing/hayabusa_engine/test.py \
 
 The harness downloads SHA256-verified Velociraptor 0.77.2 and public EVTX fixtures.
 The artifact downloads its pinned Hayabusa release through the actual tool inventory.
-No Takajo, endpoint, production server, or repository secrets are required. Four
+The baseline suite needs no endpoint, Takajo, production server, or repository
+secrets. Four
 loopback ports starting at 28990 must be free (`--port-base` changes them).
 
 Each run creates a fresh, isolated frontend and datastore, an administrator API
-identity, and genuine SERVER collections. Source upload metadata and EVTX files
-are seeded manually because no Windows endpoint is available. Files are consumed
-through `uploads()` and the `fs` accessor; output uploads are real server uploads.
-This tests post-collection processing, not client collection or transport.
+identity, and genuine SERVER collections. The baseline suite seeds source upload
+metadata and EVTX files manually. Files are consumed through `uploads()` and the
+`fs` accessor; output uploads are real server uploads. These baseline cases test
+post-collection processing. The extended Linux suite below tests actual client
+transport; the [Windows suite](windows_README.md) tests a real Windows client and
+live event-log collection.
 
 Use `--asset-cache /path/to/downloads` to reuse the three hash-verified download
 files. Never reuse a server configuration or datastore. `--workdir /new/path`
@@ -27,14 +30,15 @@ The directory includes test private keys: do not publish or commit it. Only the
 summary `report.json` is suitable for sharing.
 
 The security fixture is pinned to omerbenamram/evtx commit
-8930398ff61c56bdc0f8ab5781e4093ee34d9026. With Hayabusa 4.2.0, bundled rules,
+8930398ff61c56bdc0f8ab5781e4093ee34d9026. With Hayabusa 4.3.0, bundled rules,
 verbose JSONL, informational minimum level, and two threads, an independent CLI
 run produces 287 rows. Duplicate inputs produce 574 rows. These counts validate
 this specific fixture/configuration; they do not establish detection coverage
-or comparative performance.
+or comparative performance. The 4.3.0 fixture baseline has the same
+(RuleID, RecordID, Level) counts as the independently recorded 4.2.0 baseline.
 
 The HelloForBusiness fixture exercises successful execution with no detections.
-Hayabusa 4.2.0's channel filter skips its events and emits a newline-only timeline.
+Hayabusa 4.3.0's channel filter skips its events and emits a newline-only timeline.
 This does not establish coverage of that channel.
 
 The harness checks timeline/manifest uploads, detection row context, duplicate
@@ -47,8 +51,9 @@ publishes two synthetic client completion events to the real completion journal,
 and verifies that it schedules two genuine server collections serially and
 forwards ten medium-or-higher detections plus status rows. Nonmatching artifact
 and server-completion events must not schedule analyses. This validates monitor
-logic and journal delivery, not GUI installation, durable queuing, restart
-recovery, long-running hunts, or the timeout-cancellation path.
+logic and journal delivery. Installed monitoring and timeout/cancellation are
+covered by the extended suite below. GUI installation, durable queuing, restart
+recovery, and long-running hunts are not established by these tests.
 
 Both artifact snapshots are copied into the isolated definitions directory;
 `report.json` records their SHA256 hashes and the Velociraptor version. Tests also

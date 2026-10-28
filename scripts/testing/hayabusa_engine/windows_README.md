@@ -99,21 +99,18 @@ production throughput, AV behavior or detection parity between engines.
 
 ## Execution record
 
-The harness now targets 4.3.0; its new Windows run is pending. The record below
-is historical evidence for 4.2.0 and does not validate the upgraded release.
-
-The explicitly approved [Windows run 40406134721](https://github.com/ecapuano/velociraptor/actions/runs/40406134721)
-passed on 2026-10-26 using image `20261022.344.1`, Windows Velociraptor 0.77.2
-with a valid Authenticode signature, Hayabusa 4.2.0 live-response, and WSL1.
+The explicitly approved [Windows run 40712525553](https://github.com/ecapuano/velociraptor/actions/runs/40712525553)
+passed on 2026-10-28 using image `20261022.344.1`, Windows Velociraptor 0.77.2
+with a valid Authenticode signature, Hayabusa 4.3.0 live-response, and WSL1.
 The [sanitized result](windows-results.json) records the exact harness/artifact
 commits and artifact SHA256 values.
 
 - Native endpoint fixture: five rows with JSONL and five with default CSV;
   rule updates disabled for both deterministic cases.
-- Native endpoint live directory with default rule-update setting: 1,880 JSONL
+- Native endpoint live directory with default rule-update setting: 1,851 JSONL
   rows; update invocation, upload, parseability and cleanup checks passed.
 - Genuine Windows uploads triggered the installed Linux monitor: duplicated
-  fixture produced ten detections; three live channel exports produced 858.
+  fixture produced ten detections; three live channel exports produced 862.
 - Mixed valid/corrupt input retained ten findings and uploaded diagnostics with
   final `Success=false`. All source staging cleanup checks passed.
 
