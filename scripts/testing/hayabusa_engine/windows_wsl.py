@@ -13,6 +13,7 @@ import urllib.request
 
 import yaml
 from test import DOWNLOADS
+from rule_options import RULES, FLAGS, write_rules
 
 ANALYZER = 'Server.Analysis.Windows.EventLogs.HayabusaEngine'
 MONITOR = 'Server.Monitor.Windows.EventLogs.HayabusaEngine'
@@ -245,6 +246,39 @@ SELECT * FROM foreach(row=["System", "Application", "Security"], query={
                 'detections': len(detections), 'analysis_output_kinds': sorted(kinds),
                 'success': status['Success'], 'input_staging_cleaned': True,
                 'installed_monitor_forwarded_final_status': True}
+        # Reconfigure the installed monitor, then trigger fresh native Windows uploads.
+        # The controlled directory replaces bundled rules; config remains bundled.
+        custom_rules = write_rules(work/'custom rules')
+        option_cases = [
+            ('custom_directory_defaults', custom_rules, {}, ['normal']),
+            ('custom_directory_all_flags', custom_rules, {key: 'Y' for key in FLAGS}, list(RULES)),
+            ('custom_single_file', custom_rules/'normal.yml', {}, ['normal']),
+        ]
+        for label, rules_path, flags, expected_rules in option_cases:
+            stage = label+' installed monitor analysis'
+            query(f'SELECT rm_server_monitoring(artifact="{MONITOR}") FROM scope()')
+            parameters = dict(ArtifactRegex='^Custom.Test.WindowsHayabusaFixture$',
+                              AnalysisTimeout='300', CustomRulesPath=str(rules_path), **flags)
+            values = ','.join(key+'='+json.dumps(value) for key, value in parameters.items())
+            added = query(f'SELECT add_server_monitoring(artifact="{MONITOR}", parameters=dict({values})) AS Added FROM scope()')
+            assert added[0]['Added'] is not None
+            time.sleep(3)
+            flow = client_collection('Custom.Test.WindowsHayabusaFixture')
+            def option_completed():
+                rows = query(f'SELECT * FROM source(client_id="server", artifact="{MONITOR}/Results") WHERE ClientId={json.dumps(client_id)} AND FlowId={json.dumps(flow)} AND Kind="Status"')
+                return rows or False
+            statuses = poll(option_completed, 420)
+            assert len(statuses) == 1 and statuses[0].get('Success') is True, 'Custom rule analysis failed'
+            groups = query(f'SELECT RuleID, count() AS N FROM source(client_id="server", artifact="{MONITOR}/Results") WHERE ClientId={json.dumps(client_id)} AND FlowId={json.dumps(flow)} AND Kind="Detection" GROUP BY RuleID')
+            observed = {row['RuleID']: row['N'] for row in groups}
+            expected = {RULES[key][0]: 1166 for key in expected_rules}  # 583 logons per uploaded copy.
+            assert observed == expected, 'Custom rules or rule-enable parameters were not forwarded correctly'
+            analysis = statuses[0]['AnalysisFlowId']
+            manifest = query(f'SELECT * FROM foreach(row={{ SELECT * FROM uploads(client_id="server", flow_id={json.dumps(analysis)}) WHERE client_path =~ "input_manifest.jsonl$" }}, query={{ SELECT * FROM parse_jsonl(filename=vfs_path, accessor="fs") }})')
+            assert len(manifest) == 2 and all(not Path(row['LocalPath']).exists() for row in manifest), 'Custom rule input staging was not cleaned'
+            report['checks'][label] = dict(rule_counts=observed, success=True,
+                installed_monitor_forwarded_final_status=True, input_staging_cleaned=True,
+                custom_rules_replaced_bundled_rules=True)
         stage = 'complete'
         report['status'] = 'PASS'
     except Exception as error:

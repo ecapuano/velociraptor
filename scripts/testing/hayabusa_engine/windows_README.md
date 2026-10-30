@@ -50,7 +50,14 @@ host, install a persistent service, or require repository secrets.
 7. Upload the public fixtures alongside a deliberately corrupt EVTX. Require
    retained fixture detections, uploaded diagnostics and final `Success=false`.
    This checks the analyzer's distinction between process exit and clean analysis.
-8. Stop the client/frontend, unregister only the uniquely named test distribution,
+8. Reconfigure the installed monitor with a controlled custom rule directory,
+   first with default flags and then with deprecated, unsupported and noisy rules
+   enabled. Trigger fresh Windows uploads for each case and require the exact
+   expected rule IDs/counts. Repeat with one custom rule file. The directory
+   includes a space in its path; bundled configuration still identifies the noisy
+   rule ID. These cases verify custom rules replace the bundled rule set, parameter
+   forwarding, final status and input cleanup.
+9. Stop the client/frontend, unregister only the uniquely named test distribution,
    and remove the temporary directory. Upload only `windows-report.json` containing
    checks, counts, hashes and status. Never upload private keys, writeback files,
    server/client configurations, raw logs, event contents or the filestore.
@@ -98,6 +105,9 @@ A PASS does not validate WSL2, all Windows versions, remote TLS/firewall setups,
 production throughput, AV behavior or detection parity between engines.
 
 ## Execution record
+
+The newly added custom-rule/enable-flag cases await a fresh authorized run;
+the record below describes the previous artifact snapshot.
 
 The explicitly approved [Windows run 40749612407](https://github.com/ecapuano/velociraptor/actions/runs/40749612407)
 passed on 2026-10-28 using image `20261026.347.1`, Windows Velociraptor 0.77.2
